@@ -18,4 +18,6 @@ titles:
 key: page-about
 ---
 
-Swimming, yoga, cat, pizza, electroncs 
+자바, 안드로이드 개발자로 살아가고 있습니다.
+수영, 요가, 고양이, 전자제품 그리고 피자를 좋아합니다.
+
