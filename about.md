@@ -18,6 +18,28 @@ titles:
 key: page-about
 ---
 
-자바, 안드로이드 개발자로 살아가고 있습니다.
-수영, 요가, 고양이, 전자제품 그리고 피자를 좋아합니다.
+
+```java
+public class About {
+	public static void main(String[] args) {
+		System.out.println("what I love : ");
+		ArrayList<String> items = loveitem();
+		for(int i=0; i<items.size(); i++) {
+			System.out.println(items.get(i));
+		}
+	}
+	
+	private static ArrayList<String> loveitem() {
+		ArrayList<String> items = new ArrayList<>();
+		items.add("cat");
+		items.add("swimming");
+		items.add("yoga");
+		items.add("electronics");
+		items.add("pizza");
+		
+		return items;
+	}
+}
+```
+
 
