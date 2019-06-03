@@ -91,7 +91,7 @@ LongPress()
 
 Dishttps://developer.android.com/reference/android/view/KeyEvent.html patchPress(KEYCODE_Y)로 키보드 값을 입력할 수 있는데 키코드 값은 안드로이드페이지에서 자세히 설명하고 있다.
 
-https://developer.android.com/reference/android/view/KeyEvent.html 
+<a href= "https://developer.android.com/reference/android/view/KeyEvent.html"> keycode값 </a>
 
 위에서 만든 파일을 txt 파일로 저장하고 adb가 있는 폴더로 이동한다
 
