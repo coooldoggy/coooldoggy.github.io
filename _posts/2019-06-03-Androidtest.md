@@ -1,5 +1,5 @@
 ---
-title: Android App 테스트
+title: Android App 테스트- txt파일을 이용한 테스트
 tags: Android
 ---
 
@@ -97,7 +97,6 @@ https://developer.android.com/reference/android/view/KeyEvent.html 
 
 ```linux
 cd /Users/usr/Library/Android/sdk
-
 ```
 
 그리고 핸드폰에 이 script 파일을 복사한다.
@@ -113,4 +112,6 @@ adb shell monkey -f /sdcard/script.txt 1
 ```
 
 마지막의 1은 실행횟수를 말한다.
+
+
 
