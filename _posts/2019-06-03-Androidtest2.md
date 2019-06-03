@@ -301,4 +301,31 @@ $ANDROID_SERIAL          serial number to connect to (see -s)
 $ANDROID_LOG_TAGS        tags to be used by logcat (see logcat --help)
 ```
 
-adb를 이용하여 테스트를 
+adb를 이용하여 테스트를 실행하려면 command 라인에 이렇게 실행한다.
+
+```linux
+//패키지를 10000번 테스트 실행
+adb shell monkey -p com.example.package 10000
+```
+
+이렇게 실행하면 정말 말그대로 원숭이가 누르는 것과 같은 monkey test가 실행된다.
+터치, 드래그, 입력 등등이 모두 랜덤인데 이것의 횟수를 정해서 테스트를 할수도 있다.
+
+```linux
+--pct-touch <percent>           Touch event 발생 빈도 조절
+--pct-motion <percent>          드래그 event 발생 빈도 조절
+--pct-trackball <percent>       트랙볼 event 발생 빈도 조절
+--pct-nav <percent>              Navigation event 발생 빈도 조절
+--pct-majornav <percent>      Back, Home 버튼등의 major navigation event 발생 빈도 조절
+--pct-syskeys <percent>       System event 발생 빈도 조절 (Volume, home, end call 등)
+--pct-appswitch <percent>    새로운 app. 실행 event 발생 빈도 조절
+--pct-anyevent <percent>      기타 event 발생 빈도 조절
+```
+
+예를 들어
+
+```linux
+adb shell monkey -p com.example.package 10000 --pct-touch 100
+```
+이렇게 명령하면 터치횟수만으로 이루어진 테스트를 실행하는 것이다.
+
