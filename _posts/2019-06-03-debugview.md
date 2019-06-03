@@ -5,7 +5,7 @@ tags: Android
 
 App을 만들때 Debug용으로 사용하기 편리한 view를 만들지만, release할 때는 보이지 않았으면 하는 기능들이 있다.
 
-이러한 것들을 Debug모드에서만 보이게 설정해보자~~~ 
+이러한 것들을 Debug모드에서만 보이게 설정하는 방법을 알아보자.
 
 
 1. app의 gradle file을 설정한다.
@@ -49,3 +49,6 @@ if(BuildConfig.DEBUG_MODE){
             }
 
 ```
+
+이렇게 설정한 view는 release모드에서는 보이지 않는다.
+Debug용으로 코드를 작성할 때 유용하게 쓰일 수 있다.
