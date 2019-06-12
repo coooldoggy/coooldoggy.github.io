@@ -15,5 +15,8 @@ titles:
   zh-HK   : *ZH_HANT
   ko      : &KO       프로젝트
   ko-KR   : *KO
+articles:
+  data_source: site.sample_page
+type: grid
 key: page-projects
 ---
