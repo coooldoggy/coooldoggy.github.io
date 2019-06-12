@@ -23,7 +23,7 @@ articles:
 ---
 
 <div class="grid">
-<div class="cell cell--5" padding="20px">
+<div class="cell cell--5" style="padding: 20px;">
 <div class="card">
   <div align = "center" class="card__image">
     <a href ="https://play.google.com/store/apps/details?id=com.trycatch.jajuhang&hl=en">
@@ -39,7 +39,7 @@ articles:
 </div>
                              
  </div>
-   <div class="cell cell--5" padding="20px">
+   <div class="cell cell--5" style="padding: 20px;">
 <div class="card">
   <div align = "center" class="card__image">
     <a href ="https://play.google.com/store/apps/details?id=com.coooldoggy.streching&hl=ko">
