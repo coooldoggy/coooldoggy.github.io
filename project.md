@@ -22,7 +22,7 @@ articles:
   key: page-projects
 ---
 
-<div class="grid>
+<div class="grid">
 <div class="cell cell--5">
 <div class="card">
   <div align = "center" class="card__image">
