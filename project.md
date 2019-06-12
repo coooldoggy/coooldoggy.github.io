@@ -22,11 +22,10 @@ articles:
   key: page-projects
 ---
 
+<a href ="https://play.google.com/store/apps/details?id=com.trycatch.jajuhang&hl=en">
 <div class="card">
-  <div class="card__image">
-     <a href ="https://play.google.com/store/apps/details?id=com.trycatch.jajuhang&hl=en">
+  <div align = "center" class="card__image">
     <img class="image" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
-    </a>
   </div>
   <div class="card__content">
     <div class="card__header">
@@ -35,4 +34,5 @@ articles:
     <p> 자주행(자전거 전주 여행)은 공공데이터를 활용하여 만든 앱으로 2017 전주시 공공데이터 활용 앱 공모전에서 우수상을 수상하였습니다.</p>
   </div>
 </div>
+</a>
 
