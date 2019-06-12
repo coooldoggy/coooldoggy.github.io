@@ -27,7 +27,10 @@ articles:
     <div class="card__header">
       <h4>자주행</h4>
     </div>
-    <p>< <img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/> </p>
+    <p> <a href ="https://play.google.com/store/apps/details?id=com.trycatch.jajuhang&hl=en">
+      <img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>  
+      </a> 
+    </p>
   </div>
 </div>
 
