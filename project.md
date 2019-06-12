@@ -21,3 +21,6 @@ articles:
   show_excerpt: true
   key: page-projects
 ---
+
+
+<img class="image image--xl" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
