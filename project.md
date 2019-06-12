@@ -23,4 +23,18 @@ articles:
 ---
 
 
-<img class="image image--xl" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
+<div class="grid-container">
+  <div class="grid grid--px-3">
+    <div class="cell cell--6">
+      <div>
+      <img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
+      </div>
+    </div>
+    <div class="cell cell--6"><div>6 cells</div></div>
+    <div class="cell cell--6"><div>6 cells</div></div>
+    <div class="cell cell--6"><div>6 cells</div></div>
+  </div>
+</div>
+
+
+<img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
