@@ -16,7 +16,7 @@ header:
       ko-KR   : *KO
     url: /archive.html
     
-     - titles:
+ - titles:
       en      : &EN       Projects
       en-GB   : *EN
       en-US   : *EN
