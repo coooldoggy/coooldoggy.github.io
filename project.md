@@ -1,6 +1,6 @@
 ---
 layout: articles
-itles:
+titles:
   en      : &EN       Projects
   en-GB   : *EN
   en-US   : *EN
