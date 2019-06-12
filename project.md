@@ -22,17 +22,12 @@ articles:
   key: page-projects
 ---
 
-
-<div class="grid-container">
-  <div class="grid grid--px-3">
-    <div class="cell cell--6">
-      <div>
-      <img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/>
-      </div>
+<div class="card">
+  <div class="card__content">
+    <div class="card__header">
+      <h4>자주행</h4>
     </div>
-    <div class="cell cell--6"><div>6 cells</div></div>
-    <div class="cell cell--6"><div>6 cells</div></div>
-    <div class="cell cell--6"><div>6 cells</div></div>
+    <p>< <img class="image image--lg" src="https://lh3.googleusercontent.com/pelw3KanYSNFVhzQl5agMG07GVPqzZD7ll-ORxlp0ca_ythiwEsmJZKRNQC4vCthi3c=s360-rw"/> /p>
   </div>
 </div>
 
