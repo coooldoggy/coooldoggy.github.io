@@ -14,8 +14,7 @@ header:
       zh-HK   : *ZH_HANT
       ko      : &KO       아카이브
       ko-KR   : *KO
-    url: /archive.html
-    
+    url: /archive.html    
  - titles:
       en      : &EN       Projects
       en-GB   : *EN
@@ -32,7 +31,6 @@ header:
       ko      : &KO       프로젝트
       ko-KR   : *KO
     url: /project.html
-
   - titles:
       en      : &EN       About
       en-GB   : *EN
