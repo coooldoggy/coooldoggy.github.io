@@ -40,4 +40,25 @@ tags: Java
 ```
 
 
+<h1>오늘로 부터 몇일 전, 몇일 후 정하기</h1>
+
+before : 오늘로 부터 몇일 전 날짜 (마이너스 값을 넣어줘야한다. ex: 3일 전이면 -3)
+after : 오늘로 부터 몇일 후 날짜 
+
+```java
+
+ private void initCalendar(int before, int after) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE , before);
+        Date date = calendar.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        String startdate = dateFormat.format(date);
+        calendar.add(Calendar.DATE , after);
+        date = calendar.getTime();
+        String enddate = dateFormat.format(date);
+    }
+
+```
+
+
 
