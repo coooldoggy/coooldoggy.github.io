@@ -4,6 +4,6 @@ tags: SpringBoot
 ---
 
 
-[![Video Label](http://img.youtube.com/vi/Eqi-hYX50MI/0.jpg)](https://youtu.be/EEqi-hYX50MI?t=0s) Video Label
+[![Video Label](http://img.youtube.com/vi/Eqi-hYX50MI/0.jpg)](https://youtu.be/EEqi-hYX50MI?t=0s)
 
 
