@@ -1,6 +1,6 @@
 ---
 title: Spring Boot 강의 노트
-tags: Spring Boot
+tags: SpringBoot
 ---
 
 
