@@ -46,6 +46,15 @@ public class HelloController {
  ![my alternate text](/assets/mvc.png)
 
  ![my alternate text](/assets/Springmvc.png)
+ 
+ - View : 사용자가 보는 화면 또는 결과
+ - Controller : 사용자가 브라우저를 통해서 요청을 하면 그 요청을 처리할 컨트롤러를 호출함. 컨트롤러는 사용자의 요청을 처리하기 위한 비즈니스 로직을 호출하고, 
+                그 결과값을 사용자에게 전달해 주는 역할을 함
+ - Service : 사용자의 요청을 처리하기 위한 비즈니스 로직이 수행 됨. 일반적으로 서비스 영역은 서비스 인터페이스와 이 인터페이스의 구현체로 나누어 진다.
+ - DAO : Data Access Object의 약자. 데이터베이스에 접속해서 비즈니스 로직 실행에 필요한 쿼리 호출
+ - DB : 데이터베이스. 애플리케이션에서 발생한 모든 정보가 저장되어 있음. 
+ 
+ 
 
     
     
