@@ -27,4 +27,4 @@ public class HelloController {
 }
 ```
 
-실행 결과 : ![my alternate text](/assets/helloworld.png)
+ ![my alternate text](/assets/helloworld.png)
