@@ -70,6 +70,23 @@ tags: Swift
   실행하고자 하는 기능이 필요할 때 이 함수내에 코드를 입력하면 된다.
   
   
+  <h1> switch toggle </h1>
+
+```java
+@IBAction func switchImageOnOff(_ sender: UISwitch) {
+        if sender.isOn {
+            imgView.image = imgOn
+        }else{
+            imgView.image = imgOff
+        }
+    }
+```
+
+- sender.isOn : Toggle Switch가 켜져있는 상태
+
+  
+  
+  
   <h1> 기본 데이터 자료형 </h1>
   
   | 타입                 | 특징                                                                      | 예제                     |
@@ -85,20 +102,6 @@ tags: Swift
   
   
   
-<h1> switch toggle </h1>
-
-```java
-@IBAction func switchImageOnOff(_ sender: UISwitch) {
-        if sender.isOn {
-            imgView.image = imgOn
-        }else{
-            imgView.image = imgOff
-        }
-    }
-```
-
-- sender.isOn : Toggle Switch가 켜져있는 상태
-
 
  
   
