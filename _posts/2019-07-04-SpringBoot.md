@@ -45,7 +45,7 @@ public class HelloController {
 
  ![my alternate text](/assets/mvc.png)
 
- ![my alternate text](/assets/Springmvc.png)
+ ![my alternate text](/assets/Spingmvc.png)
  
  - View : 사용자가 보는 화면 또는 결과
  - Controller : 사용자가 브라우저를 통해서 요청을 하면 그 요청을 처리할 컨트롤러를 호출함. 컨트롤러는 사용자의 요청을 처리하기 위한 비즈니스 로직을 호출하고, 
