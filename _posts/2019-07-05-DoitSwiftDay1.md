@@ -7,6 +7,8 @@ tags: Swift
 - 끝에 붙는 !는 옵셔널 변수의 강제 언래핑을 의미한다.
 - 변수 선언 뒤에 물음표가 붙는 것은 초기값을 선언하지 않은 경우 값이 없을 수 있다는 의미로 붙여주는 것이다. 옵셔널이라는 개념으로 변수가 nil이거나
   값의 존재여부를 알 수 없다는 것을 의미한다.
+- let는 상수, var는 변수
+
 
 
 
@@ -81,6 +83,23 @@ tags: Swift
 | Character            | 단일 글자나 숫자 또는 다른 부호를 큰따옴표로 묶어서 표현                  | "T", "*", "3"            |
 | String               | 일련의 문자를 큰따옴표로 묶어서 표현                                      | "Fish", "Hi"             |
   
+  
+  
+<h1> switch toggle </h1>
+
+```java
+@IBAction func switchImageOnOff(_ sender: UISwitch) {
+        if sender.isOn {
+            imgView.image = imgOn
+        }else{
+            imgView.image = imgOff
+        }
+    }
+```
+
+- sender.isOn : Toggle Switch가 켜져있는 상태
+
+
  
   
 
