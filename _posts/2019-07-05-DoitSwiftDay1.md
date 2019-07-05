@@ -84,6 +84,15 @@ tags: Swift
 
 - sender.isOn : Toggle Switch가 켜져있는 상태
 
+ <h1> 배열의 선언 </h1>
+ 
+ 배열을 선언하는 법과 배열의 사이즈를 가져오는 법
+ 
+```java
+  var imageName = ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png"]
+  imageName.count   
+```
+
   
   
   
