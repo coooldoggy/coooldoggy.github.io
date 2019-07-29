@@ -57,21 +57,6 @@ articles:
                              
 <div>
   
-  <div class="grid">
-  <div class="cell cell--5" style="padding: 20px; height: 400px; width: 400px">
-<div class="card">
-  <div align = "center" class="card__image">
-    <a href ="http://ec2-18-221-176-166.us-east-2.compute.amazonaws.com:8080/Music/FrontPage.jsp">
-    <img class="image" src="/assets/kpop.png"/>
-       </a>
-  </div>
-  <div class="card__content">
-    <div class="card__header">
-      <h4>Kpop Korean</h4>
-    </div>
-    <p> Kpop 한국어 가사 퀴즈로 재미있게 한국어를 배울 수 있도록 만든 웹사이트입니다. </p>
-  </div>
-</div>
   </div>
 
 
