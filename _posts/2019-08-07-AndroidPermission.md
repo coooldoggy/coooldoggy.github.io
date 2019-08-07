@@ -102,7 +102,7 @@ public class PermissionUtils {
   private void checkPermission(int requesttype) {
         switch (requesttype) {
             case Define.CHECK_ACCESS_FINE_LOCATION:
-                if (UUtils.permissionCheck(this.getApplicationContext(), Define.CHECK_ACCESS_FINE_LOCATION) == false) {
+                if (PermissionUtils.permissionCheck(this.getApplicationContext(), Define.CHECK_ACCESS_FINE_LOCATION) == false) {
                     requestPermission(Define.REQUEST_ACCESS_FINE_LOCATION);
                 } else {
                 }
