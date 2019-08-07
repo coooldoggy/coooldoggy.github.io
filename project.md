@@ -53,7 +53,24 @@ articles:
     <p>굴려굴려 폼롤러는 쉽고 편하게 폼롤러 운동영상법을 보여주는 어플입니다.</p>
   </div>
 </div>
- </div>                          
+ </div>  
+ 
+  </div>
+   <div class="cell cell--5" style="padding: 20px; height: 400px; width: 400px">
+<div class="card">
+  <div align = "center" class="card__image">
+    <a href ="https://play.google.com/store/apps/details?id=com.coooldoggy.zipkok&hl=ko">
+    <img class="image" src="/assets/ic_launcher-web.png"/>
+       </a>
+  </div>
+  <div class="card__content">
+    <div class="card__header">
+      <h4>집콕</h4>
+    </div>
+    <p>집콕은 여러개 집의 체크리스트를 한번에 관리하여 좋은 집을 구할 수 있도록 돕는 어플입니다.</p>
+  </div>
+</div>
+ </div>  
                              
 <div>
   
