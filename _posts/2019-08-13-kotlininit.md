@@ -53,7 +53,7 @@ fun main(){
 
 지연초기화는 lateinit 키워드르 통해 나타낸다
 
-```java
+```kotlin
 lateinit var alignment: String
 ```
 
