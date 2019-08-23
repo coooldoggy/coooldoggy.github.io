@@ -43,7 +43,7 @@ articles:
 <div class="card">
   <div align = "center" class="card__image">
     <a href ="https://play.google.com/store/apps/details?id=com.coooldoggy.streching&hl=ko">
-    <img class="image" src="https://lh3.googleusercontent.com/bzP8aCaCf60Xd8KuwJP_bW-jUDklQnqiuZVbqA1YfJUUXGU05HQmSSYt-wt1z9aawKI=s360-rw"/>
+    <img class="image" src="https://lh3.googleusercontent.com/dsZfN1o5zvc5UtU9np3d5e8_KrSsj1g_GqsCrSIGktvabsoB8fyeWaIIz7VnDheoeDY=s360-rw"/>
        </a>
   </div>
   <div class="card__content">
