@@ -82,8 +82,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
 
                 case CONTENT_TYPE: {
-
-                    armyholder.bind(position);
+                    ViewHolder holder = (ViewHolder) holder;
+                    holder.bind(position);
                 }
             }
         }
