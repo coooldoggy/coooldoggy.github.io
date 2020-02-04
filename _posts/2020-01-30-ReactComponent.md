@@ -1,6 +1,6 @@
 ---
 title: React Native - Components
-tags: React Native
+tags: ReactNative
 ---
 
 
