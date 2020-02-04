@@ -11,8 +11,6 @@ React Native에서 사용하는 컴포넌트들에 대한 설명을 정리한다
 
 [공식문서](https://facebook.github.io/react-native/docs/activityindicator) 에서 자세한 설명이나 빠진 부분을 찾아볼 수 있다.
 
-[TOC]
-
 ## Button
 
 ```react
