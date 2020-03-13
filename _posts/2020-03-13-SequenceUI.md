@@ -21,7 +21,7 @@ tags: Android IOS Swift
 
 ## What to make 😎
 
-![ui](https://github.com/coooldoggy/coooldoggy.github.io/blob/master/assets/ui.gif)
+![ui](/assets/ui.gif)
 
 
 
