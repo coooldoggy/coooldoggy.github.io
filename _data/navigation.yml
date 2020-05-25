@@ -48,7 +48,7 @@ header:
     zh-HK   : *ZH_HANT
     ko      : &KO       TIL
     ko-KR   : *KO
-  url: /TIL.html
+  url: /til.html
 
   - titles:
       en      : &EN       About
