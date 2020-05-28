@@ -33,7 +33,7 @@ header:
       ko-KR   : *KO
     url: /project.html
    
-   - titles:
+  - titles:
     en      : &EN       TIL
     en-GB   : *EN
     en-US   : *EN
@@ -48,7 +48,7 @@ header:
     zh-HK   : *ZH_HANT
     ko      : &KO       TIL
     ko-KR   : *KO
-  url: /TIL.html
+   url: /TIL.html
 
 
   - titles:
