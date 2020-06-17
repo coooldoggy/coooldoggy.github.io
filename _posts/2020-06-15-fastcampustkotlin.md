@@ -1,7 +1,5 @@
 # FastCampus - Kotlin 20200615
 
-
-
 [TOC]
 
 
