@@ -35,7 +35,7 @@ https://docs.github.com/en/free-pro-team@latest/actions
 
 #### New Workflow 생성 
 
-![my alternate text](/assets/github1.png)
+![my alternate text](/assets/github1png.png)
 
 #### Publish Java Package with Gradle로 workflow 시작 
 
@@ -43,15 +43,12 @@ https://docs.github.com/en/free-pro-team@latest/actions
 
 #### Workflow 이름, Trigger 설정 
 
-- Trigger option
+#####Trigger option
 
-  - ```yaml
-    on: [push, pull_request]
-    ```
+  - on: [push, pull_request]  
 
-  - ```yaml
-    branches (branch 이름)
-    ```
+  -  branches (branch 이름)
+  
 
     
 
