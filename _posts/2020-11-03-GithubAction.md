@@ -43,7 +43,7 @@ https://docs.github.com/en/free-pro-team@latest/actions
 
 #### Workflow 이름, Trigger 설정 
 
-#####Trigger option
+##### Trigger option
 
   - on: [push, pull_request]  
 
