@@ -29,19 +29,19 @@ https://docs.github.com/en/free-pro-team@latest/actions
 
 ## Github Action으로 APK 빌드, Slack 메시지 전송하기
 
-#### Github repository에서 Actions tab 선택 
+### Github repository에서 Actions tab 선택 
 
 ![my alternate text](/assets/github0.png)
 
-#### New Workflow 생성 
+### New Workflow 생성 
 
 ![my alternate text](/assets/github1png.png)
 
-#### Publish Java Package with Gradle로 workflow 시작 
+### Publish Java Package with Gradle로 workflow 시작 
 
 ![my alternate text](/assets/github2.png)
 
-#### Workflow 이름, Trigger 설정 
+### Workflow 이름, Trigger 설정 
 
 ##### Trigger option
 
@@ -80,7 +80,7 @@ on:
 
 
 
-#### Java 설치
+### Java 설치
 
 ```yaml
 - name: Set up JDK 1.8
@@ -93,7 +93,7 @@ on:
 
 
 
-#### 현재 날짜 구하기
+### 현재 날짜 구하기
 
 ```yaml
 - name: Get current date
@@ -103,7 +103,7 @@ on:
 
 
 
-#### APK 생성 
+### APK 생성 
 
 ```yaml
 - name: Build APK
@@ -112,7 +112,7 @@ on:
 
 
 
-#### APK Upload
+### APK Upload
 
 https://github.com/marketplace/actions/upload-a-build-artifact 사용 
 
@@ -126,7 +126,7 @@ https://github.com/marketplace/actions/upload-a-build-artifact 사용
 
 
 
-#### Slack Message 전송 
+### Slack Message 전송 
 
 https://github.com/marketplace/actions/action-slack 사용 
 
@@ -154,7 +154,7 @@ Github Repository > Settings > Secrets에 등록
 
 
 
-#### Full code
+### Full code
 
 ```
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
