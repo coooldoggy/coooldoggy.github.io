@@ -31,11 +31,11 @@ public class About {
 	
 	private static ArrayList<String> loveitem() {
 		ArrayList<String> items = new ArrayList<>();
-		items.add("cat");
-		items.add("swimming");
-		items.add("yoga");
-		items.add("electronics");
-		items.add("pizza");
+		items.add("cat🐱");
+		items.add("swimming🏊🏻‍♀️");
+		items.add("workout🏋🏻‍♀️");
+		items.add("electronics📱");
+		items.add("pizza🍕");
 		
 		return items;
 	}
