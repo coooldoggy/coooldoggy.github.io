@@ -1,0 +1,280 @@
+---
+title: OCR API 비교
+tags: 
+    - Android
+date: 2020-02-12
+---
+
+
+
+OCR(Optical character recognition)은 사람이 쓰거나 기계로 인쇄한 문자의 영상을 기계가 읽을 수 있는 문자로 변환하는것이다.
+
+최근 ML이 트렌드로 떠오르면서 다양한 기업들에서 이를 기반으로 한 OCR API를 제공하고 있는데 몇개를 사용해보고 정리해보고자 한다.
+
+
+# Firebase ML Kit
+
+Google에서 제공하는 모바일용 ML kit이다. 무료이지만 라틴 문자만 인식이 가능하다.
+
+인식속도가 빠르고 이미지만 전송하면 텍스트를 뽑아주기 때문에 사용도 편리하다.
+
+
+
+### 사용법
+
+1. Firebase 프로젝트를 생성한다. [Firebase 콘솔](https://console.firebase.google.com/u/0/?hl=ko) 에 로그인하여 프로젝트 추가 버튼을 누르고, 가이드대로 따라한다.
+2. 프로젝트의 왼쪽사이드바에서 개발> ML kit를 클릭한다.
+3. 텍스트 인식을 눌러 시작한다.
+
+### 예제 코드
+
+```kotlin
+ private fun googleAnalyze(path: String){
+        val image: FirebaseVisionImage
+        try {
+            image = FirebaseVisionImage.fromFilePath(this, Uri.fromFile(File(path)))
+            val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
+            val result = detector.processImage(image)
+                .addOnSuccessListener {
+                    Log.d(TAG, it.text)
+                }.addOnFailureListener {
+                    Log.d(TAG, it.message)
+                }
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
+    }
+
+```
+
+
+
+# KaKao Vision API
+
+카카오에서 제공하는 Rest API에 속해있다.
+
+이미지에서 문자영역을 감지하여 문자영역의 좌표값과 이미지를 던지면 텍스트가 출력된다.
+
+이미지에서 문자영역을 추출하는 API와 텍스트를 인식하는 API가 따로따로 있기때문에 API를 두번 콜해야 문자 값을 얻을 수 있다.
+
+
+
+### 사용법
+
+1. [카카오 개발자 페이지](https://developers.kakao.com/) 에 접속하여 로그인한다.
+2. 새로운 앱을 만든다.
+3. Rest API 키 값을 얻어 API를 호출한다.
+
+
+
+### 예제코드
+
+먼저 이미지 파일을 https://kapi.kakao.com/v1/vision/text/detect 에 POST 방식으로 넘겨 텍스트 영역의 좌표값을 얻는다.
+
+
+
+##### APIManager.kt
+
+카카오 비전 API 호출 시 이미지 사이즈는 4096x4096이하여야 하고 최대 용량은 2MB이기 때문에 파일을 POST로 넘기기 전에 용량을 줄여주었다.
+
+```kotlin
+object ApiManager {
+    private val TAG = ApiManager::class.java.simpleName
+
+    fun getKakaoBoxes(fileUri: String): Observable<DataModel.boxResult> {
+        val kakaoBoxService = KakaoVisionApiService.createKakaoOCR()
+        scaleDown(fileUri)
+        val file = File(fileUri)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+        return kakaoBoxService.getKakaoBoxresult(KAKAO_KEY, requestBody)
+    }
+
+    fun scaleDown(path: String) {
+        var photo = BitmapFactory.decodeFile(path)
+        photo = Bitmap.createScaledBitmap(photo, 1000, 1000, false)
+        var bytes = ByteArrayOutputStream()
+        photo.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
+
+        var file = File(path)
+        file.createNewFile()
+        var output = FileOutputStream(file)
+        output.write(bytes.toByteArray())
+        output.close()
+
+    }
+}
+```
+
+
+
+##### DataModel.kt
+
+```kotlin
+object DataModel {
+    data class boxResult(@SerializedName("result") val result : boxes)
+    data class boxes( @SerializedName("boxes") val boxes : JsonArray)
+}
+```
+
+API의 응답 형태가 아래와 같으므로 data class를 만들어 준다.
+
+```json
+{"result":{"boxes":[[[345,554],[417,554],[417,638],[345,638]]]}}
+```
+
+
+
+##### KaKaoVisionApiService.kt
+
+```kotlin
+interface KakaoVisionApiService {
+
+    @POST(KAKAO_BOX_SUB_URL)
+    @Multipart
+    fun getKakaoBoxresult(@Header("Authorization") key: String, @Part("file\"; filename=\"photo.jpg\"") file: RequestBody) : Observable<DataModel.boxResult>
+
+    companion object{
+
+        fun createKakaoOCR(): KakaoVisionApiService{
+            return getKakaoOCRApiService().create(KakaoVisionApiService::class.java)
+        }
+
+        private fun getKakaoOCRApiService() : Retrofit {
+            return Retrofit.Builder()
+                .client(provideOkHttpClient(provideLoggingInterceptor()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(KAKAO_BASE_URL)
+                .build()
+        }
+
+
+        private fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+            val b = OkHttpClient.Builder()
+            b.addInterceptor(interceptor)
+            return b.build()
+        }
+
+
+        private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+            val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
+                Log.d("DEBUG-API-LOG", it)
+            })
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+            return interceptor
+        }
+
+    }
+}
+```
+
+Retrofit 객체를 생성하는 인터페이스를 만들어준다.
+
+Multipart로 파일을 넘기는 부분에서 삽질을 많이했는데, 검색하면 죄다 MultipartBody.Part로 넘기라고 나온다. 그런데 그렇게 넘기면 illegal type 이라고 오류가 리턴된다. RequestBody로 넘겨주고 Part에는 요청 파라미터 이름인 file을 설정해준다.
+
+
+
+##### MainActivity.kt
+
+```kotlin
+private fun kakaoAnalyzeBox(path: String){
+        ApiManager.getKakaoBoxes(path).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                Log.d(TAG, "type= ${it.result.boxes}")
+                kakaoAnalyzeOcr(path, "${it.result.boxes}")
+            }
+            .subscribe({
+                Log.d(TAG, "subscribe" + it.result)
+            }, {t: Throwable? ->
+                Log.e(TAG, "kakaoAnalyzeBox"+t?.message.toString())
+            })
+    }
+```
+
+메인액티비티에서 카메라로 사진을 찍은 후 Path를 넣어 콜해준다. 그리고 이후에 텍스트 인식 API를 콜한다.
+
+
+
+##### MainActivity.kt
+
+kakaoAnalyzeBox 함수에서 호출하는 OCR함수는 다음과 같다.
+
+```kotlin
+ private fun kakaoAnalyzeOcr(path: String, box: String){
+        ApiManager.getKakaoOCR(path, box).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers. mainThread())
+            .subscribe ({
+                tv_result.text = it.result.get("recognition_words").asString
+            },{t: Throwable? ->
+                Log.e(TAG, "kakaoAnalyzeOcr"+t?.message.toString())
+                tv_result.text = "사진이 인식되지 않습니다. 다시 촬영해주세요."
+            })
+    }
+```
+
+마찬가지로 ApiManager와 KakaoVisionApiService에 함수를 만들고 DataModel에도 응답 JSON 형식의 객체를 만들어 준다.
+
+
+
+##### DataModel.kt
+
+```kotlin
+  data class ocrResult(var result: JsonObject, var recognition_words: JsonArray)
+```
+
+
+
+##### ApiManager.kt
+
+```kotlin
+fun getKakaoOCR(fileUri: String, box: String): Observable<DataModel.ocrResult> {
+        val kakaoOcrService = KakaoVisionApiService.createKakaoOCR()
+        val file = File(fileUri)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        return kakaoOcrService.getKakaoOCRresult(KAKAO_KEY, requestBody, box)
+    }
+```
+
+
+
+##### KakoVisionApiService.kt
+
+```kotlin
+ @POST(KAKAO_OCR_SUB_URL)
+    @Multipart
+    fun getKakaoOCRresult(@Header("Authorization") key: String,@Part("file\"; filename=\"photo.jpg\"") file: RequestBody, @Query("boxes")box: String) : Observable<DataModel.ocrResult>
+```
+
+
+
+이렇게 해서 실행하면 kakao OCR API를 사용하여 텍스트를 추출할 수 있다.
+
+
+
+# Google Cloud Vision
+
+Firebase ML kit와 같이 구글에서 제공하는 서비스이지만, ML kit와 다르게 Cloud Vision은 라틴어 뿐만아니라 한국어를 포함한 다양한 언어를 제공한다. (물론 FIrebase에서 Blazer 요금제를 사용해야한다.) 하지만 1000회까지는 무료이고, Blazer요금제를 사용하더라도 무료 사용량 안에서는 과금이 되지 않기 때문에 사용량이 적다면 사용해볼 만 하다.
+
+사용방법은 Firebase ML Kit와 거의 유사하다. 한가지 다른 점은 Option을 설정해서 감지 언어를 설정할 수 있다.
+
+
+
+```kotlin
+ private fun gcpAnalyze(path: String){
+        val image: FirebaseVisionImage = FirebaseVisionImage.fromFilePath(this, Uri.fromFile(File(path)))
+        val options = FirebaseVisionCloudTextRecognizerOptions.Builder().setLanguageHints(listOf("ko")).build()
+        val dectector = FirebaseVision.getInstance().getCloudTextRecognizer(options)
+        val result = dectector.processImage(image).addOnSuccessListener {
+            Log.d(TAG, it.text)
+        }.addOnFailureListener { e->
+            Log.d(TAG, e.message)
+        }
+    }
+```
+
+
+
+Full Code는 [여기](https://github.com/coooldoggy/OCRApiTest) 에서 확인할 수 있다.

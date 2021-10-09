@@ -1,0 +1,182 @@
+---
+title: Android PermissionUtil
+tags: 
+    - Android
+date: 2019-08-07
+---
+
+어플리케이션을 만들때마다 권한에 대한 부분은 항상 헷갈린다
+<a href="https://github.com/ParkSangGwon/TedPermission"> Ted Permssion </a> 이라는 좋은 라이브러리를 사용하면 간단히 해결할 수도 있지만
+고전적인 방법으로 권한을 체크하는 법에 대해 정리해보고자 한다.
+
+안드로이드에서 권한을 받는 순서는 대부분 아래와 같이 흘러간다.
+
+1. 권한이 필요한 행동을 한다
+2. 권한이 있는지 없는지 체크한다
+
+2-1. 권한이 있으면 바로 동작 실행
+
+2-2. 권한이 없다면 runtime 권한 팝업창 호출
+
+*허용시: 동작 실행 
+
+*거부시: 설정 으로 보내거나 앱 종료
+
+권한이 있는지 없는지 체크하는 것은 OS버전을 체크하여 진행해야하는데 이는 OS버전마다 디바이스 접근 권한이 강화되기 때문이다.
+
+```java
+public class PermissionUtils {
+    private static String TAG = PermissionUtils.class.getSimpleName();
+
+    public static boolean permissionCheck(Context context, int permission) {
+        boolean result = true;
+
+        try {
+            switch (permission) {
+                case Define.CHECK_ACCESS_FINE_LOCATION:
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        int nAccessFinePermission = context.getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+                        if (nAccessFinePermission == PackageManager.PERMISSION_GRANTED) {
+                            result = true;
+                        } else {
+                            result = false;
+                        }
+                    } else {
+                        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            result = false;
+                        }
+                        result = true;
+                    }
+                    break;
+                case Define.CHECK_ACCESS_COARSE_LOCATION:
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        int nAccessFinePermission = context.getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                        if (nAccessFinePermission == PackageManager.PERMISSION_GRANTED) {
+                            result = true;
+                        } else {
+                            result = false;
+                        }
+                    } else {
+                        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            result = false;
+                        }
+                        result = true;
+                    }
+                    break;
+                case Define.CHECK_ACCESS_CAMERA:
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        int nAccessFinePermission = context.getApplicationContext().checkSelfPermission(Manifest.permission.CAMERA);
+                        if (nAccessFinePermission == PackageManager.PERMISSION_GRANTED) {
+                            result = true;
+                        } else {
+                            result = false;
+                        }
+                    }
+                    break;
+                case Define.CHECK_ACCESS_STORAGE:
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        int nAccessFinePermission1 = context.getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        int nAccessFinePermission2 = context.getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+                        if (nAccessFinePermission1 == PackageManager.PERMISSION_GRANTED && nAccessFinePermission2 == PackageManager.PERMISSION_GRANTED) {
+                            result = true;
+                        } else {
+                            result = false;
+                        }
+                    }
+                    break;
+            }//end switch
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+}
+
+```
+
+우선 PermissionUtil.class를 만든다. 이 class는 사용자가 이 앱에 대한 권한을 허용했는지 거부했는지에 대해 체크한다.
+그리고 권한을 요청할 액티비티 내에서 권한이 허용여부를 묻는 메소드를 만든다.
+
+```java
+  private void checkPermission(int requesttype) {
+        switch (requesttype) {
+            case Define.CHECK_ACCESS_FINE_LOCATION:
+                if (PermissionUtils.permissionCheck(this.getApplicationContext(), Define.CHECK_ACCESS_FINE_LOCATION) == false) {
+                    requestPermission(Define.REQUEST_ACCESS_FINE_LOCATION);
+                } else {
+                }
+                break;
+            case Define.CHECK_ACCESS_CAMERA:
+                break;
+        }
+    }
+```
+
+여기서 else 구문이 이미 권한이 존재하는 것이므로 if구문에 런타임권한을 요청하는 함수를 호출한다.
+런타임 권한을 호출하는 함수는 다음과 같다.
+
+```java
+ private void requestPermission(int requesttype) {
+        switch (requesttype) {
+            case Define.REQUEST_ACCESS_FINE_LOCATION:
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, requesttype);
+                break;
+            case Define.REQUEST_ACCESS_CAMERA:
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, requesttype);
+                break;
+        }
+    }
+```
+
+이때 android.Manifest.permission. 다음의 스트링이 권한을 의미하는 것이므로 각각의 권한에 맞게 변경하면 된다.
+
+마지막으로 권한이 승인되거나 거부되었을때 OS에서 resultCode와 결과값을 반환해주는데 이 값을 받기 위해서 method를 Override 해준다.
+
+```java
+
+ @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Define.REQUEST_ACCESS_FINE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    requestLocationAgain();
+                }
+                return;
+            case Define.CHECK_ACCESS_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한 허가
+                } else {
+                    // 권한 거부
+                }
+                break;
+        }
+    }
+    
+     private void requestLocationAgain(){
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+    
+```
+
+여기서 만약 거부당했을때 설정화면으로 이동하게 하고 싶다면 requestLocationAgain() 함수 안의 intent를 실행해주면 된다.
+
+Define. 어쩌구라고 자꾸나오는데 주로 Define에 constant들을 몰아넣고 공통으로 사용하고 있다.
+여기서 쓰였던 것들은 
+
+```java
+    public static final int CHECK_ACCESS_FINE_LOCATION = 0;
+    public static final int CHECK_ACCESS_COARSE_LOCATION = 1;
+    public static final int CHECK_ACCESS_CAMERA = 2;
+    public static final int CHECK_ACCESS_STORAGE = 3;
+```
+ 이렇게 그냥 int 값을 준것이기 때문에 클래스의 멤버로 선언해도 상관없다.
+ 
+ 

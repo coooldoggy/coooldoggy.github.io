@@ -1,0 +1,108 @@
+---
+title: Kotlin 표준함수
+tags: 
+    - Kotlin
+    - TIL
+date: 2019-08-12
+---
+
+
+```java
+import java.io.File
+
+fun main() {
+//    val menuFile = File("menu-file.txt")
+//    menuFile.setReadable(true)
+//    menuFile.setWritable(true)
+//    menuFile.setExecutable(true)
+
+    /**
+     * apply : 반복되는 것들을 줄이기 위한 함수
+     * 참조 변수를 생략 가능 : 람다 내부에서 해당 수신자에 대한 모든 함수 호출이 가능하도록 apply가 사용범위를 설정해줌
+     *
+     */
+    val menuFile = File("menu-file.txt").apply {
+        setReadable(true)
+        setWritable(true)
+        setExecutable(true)
+    }
+
+    //    val firstElement = listOf(1,2,3).first()
+    //    val firstItemSquared = firstElement * firstElement
+
+    val firstItemSquared = listOf(1, 2, 3).first().let {
+        it * it
+    }
+
+//    fun formatGreeting(vipGuest: String?): String{
+//        return if (vipGuest != null){
+//            "오랫만입니다, $vipGuest . 테이블이 준비되어 있으니 들어오시죠."
+//        }else{
+//            "저희 술집에 오신 것을 환영합니다. 곧 자리를 마련해 드리겠습니다."
+//        }
+//    }
+
+    fun formatGreeting(vipGuest: String?): String{
+        return vipGuest?.let {
+            "오랫만입니다, $it . 테이블이 준비되어 있으니 들어오시죠."
+        } ?: "저희 술집에 오신 것을 환영합니다. 곧 자리를 마련해 드리겠습니다."
+    }
+
+    /**
+     * run 함수 : 수신자 객체를 반환하지 않음
+     * 람다의 결과 true/false 를 반환함
+     */
+    val servesDragonBreath = menuFile.run {
+        readText().contains("Dragon's Breath")
+    }
+
+    /**
+     * run : 수신자에 대한 함수 참조 실행
+     */
+    fun nameIsLong(name: String) = name.length >= 20
+    "Madrigal".run(::nameIsLong)
+    "Polarcubis, Supreme Master of NyetHack".run(::nameIsLong)
+
+    fun playerCreateMessage(nameTooLong: Boolean): String{
+        return if (nameTooLong){
+            "Name is Too long. Please choose another name"
+        }else{
+            "Welcome, adventurer"
+        }
+    }
+
+    "Polarcubis, Supreme Master of NyetHack"
+        .run(::nameIsLong)
+        .run(::playerCreateMessage)
+        .run(::println)
+
+    /**
+     * also: run과 비슷하지만 람다의 결과 대신 수신자 객체를 반환함
+     *
+     */
+    var fileContents: List<String>
+    File("file.txt")
+        .also {
+            print(it.name)
+        }.also {
+            fileContents = it.readLines()
+        }
+
+    /**
+     * with
+     * 수신자 객체를 첫 번째 매개변수의 인자로 받음
+     */
+    val nameTooLong = with("Polarcubis, Supreme Master of NyetHack"){
+        length >= 20
+    }
+
+    /**
+     * takeif : 조건식이 true이면 수신자 객체 반환 ,false이면 null 반환
+     * takeUnless: false이면 수신자 객체 반환 
+     */
+    val FileContents = File("myFile.txt")
+        .takeIf { it.canRead() && it.canWrite() }
+        ?.readText()
+}
+
+```

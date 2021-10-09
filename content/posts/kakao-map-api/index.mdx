@@ -1,0 +1,57 @@
+---
+title: Andriod App에 Kakao 지도 API 추가하기
+tags: 
+    - Android
+date: 2019-07-18
+---
+
+
+
+Android 앱에 kakao API를 추가하려고 공식 가이드문서를 따라하다보면 절대 .. 제대로 동작하지 않는다.
+문서를 업데이트를 안하는건지 API 자체를 관리안하는 건지 모르겠지만 쓸때마다 헷갈리므로 정리해보고자 한다.
+
+먼저  <a href="http://apis.map.kakao.com/android/guide/">카카오지도API가이드</a> 에 접속해서 SDK를 다운받는다.
+(왜 아직도 gradle이 안되죠 ? ? ? 8ㅅ8 )
+
+그리고 라이브러리 파일을 프로젝트에 추가하라고 하는데 이대로 하면 so file을 계속 읽지 못하는 오류가 나온다.
+
+그래서 sdk 안에 들어있는 jar file 은 project > app > libs 폴더 안에 넣고 
+나머지 so file은 project > app > src > main > jniLibs 폴더를 만들어 추가한다.
+
+```
+--Project 이름
+└───app
+  ---build
+  ---libs
+      --libDaumMapAndroid.jar
+└───src
+      --androidTest
+      --main
+          --AndroidManifest.xml
+          --java
+          --res
+          --jniLibs
+            -- armeabi
+            -- armeabi-v7a
+      --test
+└───gradle
+```
+
+
+이런 구조로 프로젝트를 만들어 준다.
+
+그리고 나서 build.gradle(app) 파일에 다음 코드를 추가해준다.
+
+```java
+android {
+   ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "x86_64", "mips"
+        }
+}
+
+dependencies{
+   implementation files('libs/libDaumMapAndroid.jar')
+}
+```
+
+이제 kakao map을 구현하면 정상적으로 구동된다. 

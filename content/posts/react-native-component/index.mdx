@@ -1,0 +1,748 @@
+---
+title: React Native - Components
+tags: 
+    - React
+    - ReactNative
+    - TIL
+date: 2020-01-30
+---
+
+
+
+# React Native Components
+
+React Native에서 사용하는 컴포넌트들에 대한 설명을 정리한다.
+
+[공식문서](https://facebook.github.io/react-native/docs/activityindicator) 에서 자세한 설명이나 빠진 부분을 찾아볼 수 있다.
+
+## Button
+
+```react
+  <View style={styles.container}>
+        <Button
+          onPress={() => {
+            Alert.alert('Pressed!!');
+          }}
+          title='Button'
+          color='#841584'
+          accessibilityLabel='You can click this one to show alert press.'
+        />
+      </View>
+```
+
+- onPress : Onclick event 를 정의함
+- Title: Button에 나타낼 text를 정의함
+- accessibilityLabel : 시각장애인용 텍스트 대치어를 정의함
+- color : IOS에서는 text 색, AOS에서는 button의 배경색을 정의함
+- Disabled: true 이면 버튼이 비활성화 됨
+
+
+
+## Activity Indicator
+
+```react
+ <View style={styles.container}>
+        <View
+          style={{
+            marginTop: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            size="large" color="#0000ff"
+          />
+        </View>
+        <View
+          style={{
+            marginTop: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            size="small"
+            color="black"
+          />
+        </View>
+        <View
+          style={{
+            marginTop: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            animating={false}
+            size="large"
+            color="black"
+            hidesWhenStopped={false}
+          />
+        </View>
+        {/* <View
+          style={{
+            marginTop: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            size={'40'}
+            color='#3d3d3d'
+          />
+        </View> */}
+      </View>
+```
+
+- Animating : 인디케이터를 보여줄지 말지 (true/false)
+- Color: spinner 색을 결정함 IOS 기본색은 회색, AOS 기본색은 다크시안
+- hidesWhenStopped : animated 되지 않았을때 자동으로 숨길지 여부를 설정
+- Size: 인디케이터의 사이즈를 결정한다.
+
+
+
+## DatePicker - IOS
+
+시간, 날짜를 선택하는 피커화면을 만든다. onDateChange 콜백함수와 연동하여 사용한다.
+
+```react
+import React, {Component} from 'react';
+import {DatePickerIOS, View, StyleSheet} from 'react-native';
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {chosenDate: new Date()};
+
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate(newDate) {
+    this.setState({chosenDate: newDate});
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <DatePickerIOS
+          date={this.state.chosenDate}
+          onDateChange={this.setDate}
+        />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
+```
+
+- Date: 선택된 날짜를 반환한다.
+- onChange: 날짜나 시간이 바뀌었을 때 호출하는 함수
+- onDateChange: 날짜가 바뀌었을 떄 호출하는 함수
+- MaximunDate/ minimunDate : 날짜 선택의 최대/ 최소 범위를 설정한다.
+- minuteInterval : 시간선택의 분단위를 설정한다.
+- mode : 피커의 모드를 선택한다. date, time, datetime, countdown
+- Locale : 피커의 날짜, 시간의 지역을 설정한다.
+- initialDate : 사용자가 날짜를 선택하기 전의 기본 값을 설정한다.
+
+
+
+## DrawerLayout - Android
+
+안드로이드의 DrawerLayout을 만들 때 사용한다.
+
+```react
+render: function() {
+  var navigationView = (
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}>I'm in the Drawer!</Text>
+    </View>
+  );
+  return (
+    <DrawerLayoutAndroid
+      drawerWidth={300}
+      drawerPosition={DrawerLayoutAndroid.positions.Left}
+      renderNavigationView={() => navigationView}>
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Text style={{margin: 10, fontSize: 15, textAlign: 'right'}}>Hello</Text>
+        <Text style={{margin: 10, fontSize: 15, textAlign: 'right'}}>World!</Text>
+      </View>
+    </DrawerLayoutAndroid>
+  );
+},
+```
+
+- onDrawerClose : 레이아웃이 닫힐때 호출하는 함수를 정의한다.
+- drawerPosition : 레이아웃의 방향을 결정한다. DrawerConsts.DrawerPosition.Left/ DrawerConsts.DrawerPosition.Right
+- keyboardDismissMode: 드래그시 키보드를 숨길지 여부를 설정한다. None: 숨기지않음/ on-drag : 드래그가 시작되면 숨김
+- onDrawerOpen: 레이아웃이 열릴때 호출하는 함수를 정의한다.
+- onDrawerStateChange: 레이아웃의 상태가 변할때 호출하는 함수를 정의한다.
+
+
+
+## Flat List
+
+기본적인 리스트뷰를 만들어준다. Section 별로 분류되는 기능은 SectionList를 이용한다. 
+
+가로, 세로 뷰를 지원하며, 헤더와 푸터, 당겨서 새로고침, 스크롤시 로드 등을 기본으로 지원한다.
+
+```react
+import React from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import Constants from 'expo-constants';
+
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Second Item',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item',
+  },
+];
+
+function Item({ title }) {
+  return (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+}
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => <Item title={item.title} />}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+});
+
+```
+
+
+
+선택기능을 추가한 리스트 
+
+```react
+import React from 'react';
+import {
+  SafeAreaView,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  Text,
+} from 'react-native';
+import Constants from 'expo-constants';
+
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Second Item',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item',
+  },
+];
+
+function Item({ id, title, selected, onSelect }) {
+  return (
+    <TouchableOpacity
+      onPress={() => onSelect(id)}
+      style={[
+        styles.item,
+        { backgroundColor: selected ? '#6e3b6e' : '#f9c2ff' },
+      ]}
+    >
+      <Text style={styles.title}>{title}</Text>
+    </TouchableOpacity>
+  );
+}
+
+export default function App() {
+  const [selected, setSelected] = React.useState(new Map());
+
+  const onSelect = React.useCallback(
+    id => {
+      const newSelected = new Map(selected);
+      newSelected.set(id, !selected.get(id));
+
+      setSelected(newSelected);
+    },
+    [selected],
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => (
+          <Item
+            id={item.id}
+            title={item.title}
+            selected={!!selected.get(item.id)}
+            onSelect={onSelect}
+          />
+        )}
+        keyExtractor={item => item.id}
+        extraData={selected}
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+});
+
+```
+
+- data : Array객체를 요구하며 필수값이다.
+- ItemSeperatorComponent : 아이템 사이의 구분선을 정의한다.
+- numColums : 행의 개수를 정의한다.
+- onEndReached: 스크롤의 마지막에 닿으면 콜하는 함수를 정의한다.
+- onRefresh : 새로고침시 호출하는 함수를 정의한다.
+
+
+
+## Section List
+
+Flat List에서 Section별 기능을 추가한 리스트 
+
+```react
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  SectionList,
+} from 'react-native';
+import Constants from 'expo-constants';
+
+const DATA = [
+  {
+    title: 'Main dishes',
+    data: ['Pizza', 'Burger', 'Risotto'],
+  },
+  {
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+  },
+  {
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
+  },
+  {
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
+];
+
+function Item({ title }) {
+  return (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+}
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <SectionList
+        sections={DATA}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => <Item title={item} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+    marginHorizontal: 16,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+  },
+  header: {
+    fontSize: 32,
+  },
+  title: {
+    fontSize: 24,
+  },
+});
+
+```
+
+
+
+## Image
+
+URL 이미지, 디바이스 이미지 등 다양한 형태의 이미지를 지원한다.
+
+```react
+import React, { Component } from 'react';
+import { View, Image } from 'react-native';
+
+export default class DisplayAnImage extends Component {
+  render() {
+    return (
+      <View>
+        <Image
+          style={{width: 50, height: 50}}
+          source={require('@expo/snack-static/react-native-logo.png')}
+        />
+        <Image
+          style={{width: 50, height: 50}}
+          source={{uri: 'https://facebook.github.io/react-native/img/tiny_logo.png'}}
+        />
+        <Image
+          style={{width: 66, height: 58}}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=='}}
+        
+```
+
+
+
+안드로이드 기기에 GIF나 URL이미지를 추가할 때는 build.gradle에 dependencies를 추가해줘야한다.
+
+```java
+dependencies {
+  // If your app supports Android versions before Ice Cream Sandwich (API level 14)
+  implementation 'com.facebook.fresco:animated-base-support:1.10.0'
+
+  // For animated GIF support
+  implementation 'com.facebook.fresco:animated-gif:1.12.0'
+
+  // For WebP support, including animated WebP
+  implementation 'com.facebook.fresco:animated-webp:1.10.0'
+  implementation 'com.facebook.fresco:webpsupport:1.10.0'
+
+  // For WebP support, without animations
+  implementation 'com.facebook.fresco:webpsupport:1.10.0'
+}
+```
+
+- resizeMode : 이미지가 컨테이너 사이즈와 다를 시 정렬 모드를 설정한다. cover/contain/stretch/repeat/center
+- resizeMethod : 이미지가 컨터이너 사이즈와 다를 시 맞춤 모드를 설정한다. auto/resize/scale
+- defaultSource: 기본 이미지를 설정한다. 로컬 이미지로 설정할 때는 require('./path/to/image.png')와 같이 설정한다.
+- getSize: 이미지의 사이즈를 반환한다.
+
+
+
+## ImageBackground
+
+화면의 배경을 이미지로 설정하고자 할때 사용한다.
+
+```react
+return (
+  <ImageBackground source={...} style={{width: '100%', height: '100%'}}>
+    <Text>Inside</Text>
+  </ImageBackground>
+);
+```
+
+
+
+## View
+
+UI를 구성할 때 가장 기본이 되는 것. flexbox, style, some touch handling, accessibility를 지원한다. 
+
+자세한 내용은 [공식문서](https://facebook.github.io/react-native/docs/view) 에서 확인가능하다.
+
+```react
+class ViewColoredBoxesWithText extends Component {
+  render() {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 100,
+          padding: 20,
+        }}>
+        <View style={{backgroundColor: 'blue', flex: 0.3}} />
+        <View style={{backgroundColor: 'red', flex: 0.5}} />
+        <Text>Hello World!</Text>
+      </View>
+    );
+  }
+}
+```
+
+
+
+## SafeAreaView
+
+IOS 11 버전 이상에서 지원되는 뷰이다. 홈버튼이 없고 제스쳐로 드래그하여 화면을 조정하므로 그 영역에 겹치지 않도록 설정하는 것이다
+
+```react
+import React from 'react';
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text>Page content</Text>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+```
+
+
+
+## ScrollView
+
+길어지는 뷰에 스크롤을 추가한다.
+
+```react
+import React from 'react';
+import { StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native';
+import Constants from 'expo-constants';
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <Text style={styles.text}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  scrollView: {
+    backgroundColor: 'pink',
+    marginHorizontal: 20,
+  },
+  text: {
+    fontSize: 42,
+  },
+});
+
+```
+
+
+
+## TextInput
+
+```react
+import React, { Component } from 'react';
+import { TextInput } from 'react-native';
+
+export default function UselessTextInput() {
+  const [value, onChangeText] = React.useState('Useless Placeholder');
+
+  return (
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+      onChangeText={text => onChangeText(text)}
+      value={value}
+    />
+  );
+}
+
+```
+
+- autoCapitalize : characters/ words/ sentences/ none
+- defaultValue : 기본값
+
+
+
+## RefreshControl
+
+Pull to refresh를 가능하게 하는 UI
+
+```react
+lass Screen extends Component<Props, State> {
+  static navigationOptions = {
+    title: 'RefreshControl',
+  };
+
+  timeout;
+
+  state = {
+    refreshing: false,
+  };
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.timeout = setTimeout(() => {
+      this.setState({refreshing: false});
+    }, 3000);
+  }
+
+  componentWillUnmount = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          style={{
+            alignSelf: 'stretch',
+          }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+          <Text>text</Text>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+export default Screen;
+```
+
+- Refreshing : 화면이 리프레쉬 되고 있는지를 반환함 (true/false)
+- onRefresh: 새로고침 시 호출하는 함수 정의
+- Colors : 인디케이터 색 정의 (안드로이드에서만 가능)
+- tintColor : 인디케이터 색 정의 (IOS에서만 가능)
+
+
+
+## Switch
+
+```react
+class Screen extends Component<Props, State> {
+  static navigationOptions = {
+    title: 'Switch',
+  };
+
+  state = {
+    val: false,
+  };
+
+  onValChange = (val) => {
+    console.log('onValChange');
+    this.setState({
+      val,
+    });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Switch
+          onValueChange={this.onValChange}
+          value={this.state.val}
+        />
+      </View>
+    );
+  }
+}
+
+export default Screen;
+```
+
+- disabled: true로 설정하면 스위치를 토글할 수 없음
+- onValueChange: 값이 바뀌면 호출할 함수를 정의한다.
+
+
+

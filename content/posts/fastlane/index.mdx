@@ -1,0 +1,97 @@
+---
+title: Fastlane을 통한 FTP apk 자동 배포
+tags: 
+    - CI/CD
+date: 2019-11-27
+---
+
+앱이 수정될 떄 마다 APK FTP 서버에 올리는 것은 매우 귀찮다 ..
+자동으로 배포하는 방법을 찾다가 <a href="https://docs.fastlane.tools/"> Fastlane </a>을 발견했다.
+
+Fastlane은 Google play console과 연계하여 앱의 자동배포를 도와주는데, 
+<a href="https://github.com/fastlane-community/fastlane-ftp-plugin/tree/master/fastlane">플러그인</a>을 이용하면 FTP 업로드도 가능하다.
+
+터미널에서 명령어를 입력하여 Fastlane을 설치한다.
+
+<h4>RubyGem 이용</h4>
+
+```java
+sudo gem install fastlane -NV
+```
+
+<h4>homebrew 이용</h4>
+
+```java
+brew cask install fastlane
+```
+
+프로젝트 폴더로 진입한뒤 fastlane을 초기화한다.
+성공했다면 프로젝트 폴더 아래에 fastlane 폴더가 생긴다.
+
+```java
+fastlane init
+```
+
+ftp upload plugin을 설치한다.
+플러그인 링크 : <a href="https://github.com/fastlane-community/fastlane-ftp-plugin/tree/master/fastlane">https://github.com/fastlane-community/fastlane-ftp-plugin/tree/master/fastlane</a>
+
+```java
+fastlane add_plugin ftp
+```
+
+.env 파일을 생성하여 FTP 정보를 입력한다.
+
+<h4>env file 생성</h4>
+
+```java
+touch .env
+```
+
+```java
+FTP_HOST=""
+FTP_USER=""
+FTP_PASSWORD=""
+FTP_PORT=""
+
+FTP_UPLOAD_SRC="./xxxx.apk"
+FTP_UPLOAD_DEST="/aos/"
+```
+
+프로젝트 경로아래에 생성된 fastlane 폴더의 fastfile을 수정하여 ftp upload 함수를 추가한다.
+
+```java
+desc "Upload to FTP Server"
+  lane :ftpupload do
+
+
+//apk build
+
+
+  gradle(task: "assemble",
+		 build_type: "debug")
+
+
+//ftp upload
+
+  ftp(
+	host: ENV['FTP_HOST'],
+	username: ENV['FTP_USER'],
+	password: ENV['FTP_PASSWORD'],
+	port: ENV['FTP_PORT'].to_i,
+	upload:{
+		src: ENV['FTP_UPLOAD_SRC'],
+		dest: ENV['FTP_UPLOAD_DEST']
+	})
+end
+
+```
+
+
+업로드 명령어 → fastfile에서 설정한 함수명을 통해 업로드를 실행한다.
+만약, FTP TLS 연결방식이 암호화 되어있다면 실행되지 않는다 ... 평문으로 되있는 곳에서만 실행된다.
+
+```java
+fastlane ftpupload
+```
+
+

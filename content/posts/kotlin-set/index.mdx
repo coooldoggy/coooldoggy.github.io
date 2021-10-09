@@ -1,0 +1,66 @@
+---
+title: Kotlin set
+tags: 
+    - Kotlin
+    - TIL
+date: 2019-09-25
+---
+
+List를 만들고 List에 들어있는 순서대로 코드를 진행하고싶을때 Java에서는 다음 index를 사용하기 위해 for문을 돌리거나 while문을 돌린다.
+koltin에서는 get/set 함수를 내부적으로 생성해주기 떄문에 따로 getter/setter를 만들 필요가 없다.
+property를 선언하는 기본문법은 다음과 같다.
+
+```kotlin
+var <propertyName>[: <PropertyType>] [= <property_initializer>]
+    [<getter>]
+    [<setter>]
+```
+하지만 아까 언급했듯이 get/set은 기본적으로 생성되기 때문에 만들지 않아도 된다.
+하지만 커스텀 접근자를 생성하여 다른 동작을 하게 할 수 있다. 
+
+```kotlin
+var stringRepresentation: String
+    get() = this.toString()
+    set(value) {
+        setDataFromString(value) // parses the string and assigns values to other properties
+    }
+```
+
+그래서 list를 만들어 순서대로 동작하게 하고 싶을때에 한동작을 완료하고 난후, 해당하는 동작을 list에서 제거하고 
+변수에 담아 그 변수를 set하면 자연스럽게 다음 동작으로 넘어가게 된다. 
+
+```koltin
+private val sequenceList = mutableListOf(1,2,3,4,5)
+
+fun main() {
+    println("Hello, world!!!")
+    println(sequenceList)
+    nextStepTrigger()
+    nextStepTrigger()
+    nextStepTrigger()
+    nextStepTrigger()
+    nextStepTrigger()
+}
+
+private var provisioningStep: Int = 0
+	set(nextStep){
+        field = nextStep
+        println("nextStep= $nextStep")
+    }
+    
+ fun nextStepTrigger(){
+     if(sequenceList.isNotEmpty()){
+         provisioningStep = sequenceList.removeAt(0)
+     }
+ }
+```
+
+이렇게 실행하게 되면 결과값은  이렇게 된다.
+```java
+[1, 2, 3, 4, 5]
+nextStep= 1
+nextStep= 2
+nextStep= 3
+nextStep= 4
+nextStep= 5
+```
