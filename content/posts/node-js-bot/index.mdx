@@ -1,0 +1,215 @@
+---
+title: NodeJs로 사용자 수 알림 SlackBot만들기 
+tags: 
+    - Nodejs
+date: 2020-10-14
+---
+
+# 코드작성
+
+아침마다 MySqlWorkbench를 실행해서 사용자수를 쿼리하기 귀찮아서 NodeJs로 사용자 수를 슬랙 메시지로 보내주는 Bot을 만들기로 했다..
+
+NodeJS는 잘모르지만 기능이 간단하니까 할 수는 있을 것이라고 생각하고 도전!!
+
+
+
+### Slack Webhook
+
+코드를 사용해서 Slack 메시지를 보내려면 일단 Slack WebHook을 설정해줘야한다.
+
+[브랜디 랩스 블로그](http://labs.brandi.co.kr/2019/01/30/kwakjs.html) 의 글을 보고 설정했다.
+
+코드에 Slack 플러그인과 WebHook URL을 선언하고 Slack 객체를 만들어 Webhook을 설정한다. 
+
+```
+
+const Slack = require("slack-node");
+
+var slackwebhook = "https://hooks.slack.com/services/";
+
+const slack = new Slack();
+
+slack.setWebhook(slackwebhook);
+
+```
+
+메시지를 보낼 함수를 만들어준다.
+메시지를 보내고 메시지 보내기에 실패하면 mysql과 연결을 끊는다. 
+
+```
+const send = async (message) => {
+    slack.webhook({
+        username: '사용자수 알림이',
+        text: message,
+        channel: '#service'
+    }, function (err, response) {
+        console.log(response);
+        connection.end();
+    });
+}
+
+```
+
+
+
+### SQL
+
+핵심으로 원하는 기능이 SQL 쿼리를 실행해서 사용자 수를 알려주는 것이기 때문에 DB와 연결하여 쿼리를 하는 기능이 필요하다. 
+
+
+
+MySQL 플러그인 선언 
+
+```
+
+var mysql = require("mysql");
+
+```
+
+MySQL에 연결하기 위해 필요한 정보들도 선언한다.
+
+```
+var connection = mysql.createConnection({
+    host: "HOST URL",
+    user:"USER ID",
+    password:"PW",
+    database:"DB NAME"
+});
+
+```
+
+### CRON JOB
+
+매일 아침 8시 30분에 알림을 받고 싶어서 Cron Job을 이용해서 작업주기를 설정하였다.
+월화수목금 아침 8시 30분에 "select count(*) from user" 쿼리를 수행 한 뒤 메시지를 보낸다. 
+
+```
+const cron = require('node-cron');
+const schedule = require('node-schedule');
+
+schedule.scheduleJob('30 8 * * 1,2,3,4,5', function () {
+    connection.connect(function (err) {
+        if (err) {
+            throw err;
+        } else {
+            connection.query("select count(*) from user", function (err, rows, fields) {
+                if (!err) {
+                    console.log(rows[0]);
+                    send(new Date() + " 사용자수 :" + JSON.stringify(rows));
+                } else {
+                    console.log(err);
+                }
+
+            });
+        }
+    });
+    connection.end();
+})
+
+```
+
+### Full code
+
+```
+var mysql = require("mysql");
+const Slack = require("slack-node");
+const cron = require('node-cron');
+const schedule = require('node-schedule');
+var slackwebhook = "https://hooks.slack.com/services/";
+const slack = new Slack();
+slack.setWebhook(slackwebhook);
+
+
+var connection = mysql.createConnection({
+    host: "HOST URL",
+    user:"USER ID",
+    password:"PW",
+    database:"DB NAME"
+});
+
+const send = async (message) => {
+    slack.webhook({
+        username: '사용자수 알림이',
+        text: message,
+        channel: '#service'
+    }, function (err, response) {
+        console.log(response);
+        connection.end();
+    });
+}
+
+schedule.scheduleJob('30 8 * * 1,2,3,4,5', function () {
+    connection.connect(function (err) {
+        if (err) {
+            throw err;
+        } else {
+            connection.query("select count(*) from user", function (err, rows, fields) {
+                if (!err) {
+                    console.log(rows[0]);
+                    send(new Date() + " 사용자수 :" + JSON.stringify(rows));
+                } else {
+                    console.log(err);
+                }
+
+            });
+        }
+    });
+    connection.end();
+})
+
+
+```
+
+
+### Deploy
+
+#### EC2에 git 설치
+
+```
+sudo yum install git
+git init
+git config --global user.name "your username"
+git config --global user.email [your mail address]
+```
+
+#### EC2에 nvm 설치
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+. ~/.nvm/nvm.sh
+```
+
+#### EC2에 node 설치
+
+```
+nvm install node
+```
+
+Node 설치 후 Version 확인
+```
+node -e "console.log('Running Node.js ' + process.version)"
+```
+
+#### EC2에 Repository clone
+
+```
+git clone + [repository 주소]
+```
+
+#### pm2로 실행
+
+pm2 설치 
+```
+sudo npm install -g pm2
+```
+
+node app실행
+```
+pm2 start app.js
+```
+
+app이 실행중인지 확인하려면 아래 명령어 사용 
+```
+pm2 status
+```
