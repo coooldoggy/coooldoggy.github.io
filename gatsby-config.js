@@ -9,10 +9,10 @@ module.exports = {
     // You can overwrite values here that are used for the SEO component
     // You can also add new values here to query them like usual
     // See all options: https://github.com/LekoArts/gatsby-themes/blob/master/themes/gatsby-theme-minimal-blog/gatsby-config.js
-    siteTitleAlt: `To infinity and beyond`,
+    siteTitleAlt: `coooldoggy.dev`,
     siteTitle: `coooldoggy.dev`,
     author: `@coooldoggy`,
-    siteHeadline: `Minimal Blog - Gatsby Theme from @lekoarts`,
+    siteHeadline: `coooldoggy.dev`,
     siteUrl: `https://coooldoggy.github.io`,
     siteDescription : ``,
     siteLanguage: `kr`,
