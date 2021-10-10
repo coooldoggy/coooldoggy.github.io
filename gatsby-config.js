@@ -4,7 +4,6 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE
 const googleAnalyticsTrackingId = process.env.GOOGLE_ANALYTICS_ID
 
 module.exports = {
-  url: "https://coooldoggy.github.io",
   pathPrefix: "/",
   siteMetadata: {
     // You can overwrite values here that are used for the SEO component
