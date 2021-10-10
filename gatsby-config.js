@@ -74,7 +74,7 @@ module.exports = {
       options: {
         name: `coooldoggy`,
         short_name: `coooldoggy-blog`,
-        description: ``,
+        description: `coooldogy dev blog`,
         start_url: `/`,
         background_color: `#fff`,
         theme_color: `#6B46C1`,
