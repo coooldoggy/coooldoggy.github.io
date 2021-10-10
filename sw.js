@@ -27,43 +27,27 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-1be11ffa047d993fd460.js"
+    "url": "webpack-runtime-b75626cf139840ac0e3f.js"
   },
   {
     "url": "framework-fe44efd241c5a5e3dde4.js"
   },
   {
-    "url": "app-f2767a4039e5b0ae1c34.js"
+    "url": "app-f5b8ccd439733bb55545.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "8b8b2ad9d4eeffe07604fc531ea20cb8"
+    "revision": "7a7259b875d2d2b097e74c0dcc073526"
   },
   {
     "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-f25f8e8497fafe072f1f.js"
-  },
-  {
-    "url": "page-data/offline-plugin-app-shell-fallback/page-data.json",
-    "revision": "9b7bf67fcd2eea3982cd5dfe0419b376"
-  },
-  {
-    "url": "page-data/sq/d/2744905544.json",
-    "revision": "6fded333b4ed834f59ae5dc670f8d388"
-  },
-  {
-    "url": "page-data/sq/d/3090400250.json",
-    "revision": "62e7831ae1d59374b26a5d831550eb9f"
-  },
-  {
-    "url": "page-data/app-data.json",
-    "revision": "7658216aed431a61bdc182d795bbe0be"
   },
   {
     "url": "polyfill-ed0c5e346183b2b74585.js"
   },
   {
     "url": "manifest.webmanifest",
-    "revision": "ba25da972c2daf53e9613da637104660"
+    "revision": "056fba137cca6c0f22e200dc84db8e8b"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
@@ -150,12 +134,12 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   lastNavigationRequest = event.request.url
 
   let { pathname } = new URL(event.request.url)
-  pathname = pathname.replace(new RegExp(`^/coooldoggy.github.io`), ``)
+  pathname = pathname.replace(new RegExp(`^`), ``)
 
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/coooldoggy.github.io/app-f2767a4039e5b0ae1c34.js`))) {
+  if (!resources || !(await caches.match(`/app-f5b8ccd439733bb55545.js`))) {
     return await fetch(event.request)
   }
 
@@ -168,7 +152,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
     }
   }
 
-  const offlineShell = `/coooldoggy.github.io/offline-plugin-app-shell-fallback/index.html`
+  const offlineShell = `/offline-plugin-app-shell-fallback/index.html`
   const offlineShellWithKey = workbox.precaching.getCacheKeyForURL(offlineShell)
   return await caches.match(offlineShellWithKey)
 })
