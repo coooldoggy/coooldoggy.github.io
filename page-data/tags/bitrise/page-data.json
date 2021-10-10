@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---node-modules-lekoarts-gatsby-theme-minimal-blog-core-src-templates-tag-query-tsx",
+    "path": "/tags/bitrise",
+    "result": {"data":{"allPost":{"nodes":[{"slug":"/bitrise로-apk-자동-배포하기","title":"Bitrise로 APK 자동 배포하기","date":"01.04.2020","excerpt":"Bitrise 회원 가입 및 앱 생성 Bitrise 홈페이지  에 접속해서 회원가입을 진행한다. Add your first app을 눌러 앱 생성을 시작한다. App을 Private으로 할것인지 Public으로 할것인지 선택한 후 git…","timeToRead":1,"description":null,"tags":[{"name":"Android","slug":"android"},{"name":"Bitrise","slug":"bitrise"},{"name":"CI/CD","slug":"ci-cd"}]}]}},"pageContext":{"slug":"bitrise","name":"Bitrise","formatString":"DD.MM.YYYY"}},
+    "staticQueryHashes": ["2744905544","3090400250","318001574"]}

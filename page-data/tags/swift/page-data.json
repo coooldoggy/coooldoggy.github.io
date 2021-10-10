@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---node-modules-lekoarts-gatsby-theme-minimal-blog-core-src-templates-tag-query-tsx",
+    "path": "/tags/swift",
+    "result": {"data":{"allPost":{"nodes":[{"slug":"/순서가-있는-ui-처리하기","title":"순서가 있는 UI 처리하기","date":"13.03.2020","excerpt":"Introduction 모바일 앱을 만들다 보면 회원 가입과 같이 순서대로 값을 입력해야 하는 경우가 생긴다. 기존에 JAVA…","timeToRead":1,"description":null,"tags":[{"name":"Android","slug":"android"},{"name":"IOS","slug":"ios"},{"name":"Swift","slug":"swift"},{"name":"Kotlin","slug":"kotlin"}]}]}},"pageContext":{"slug":"swift","name":"Swift","formatString":"DD.MM.YYYY"}},
+    "staticQueryHashes": ["2744905544","3090400250","318001574"]}
