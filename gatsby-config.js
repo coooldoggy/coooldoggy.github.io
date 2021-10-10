@@ -4,7 +4,7 @@ const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE
 const googleAnalyticsTrackingId = process.env.GOOGLE_ANALYTICS_ID
 
 module.exports = {
-  pathPrefix: "coooldoggy.github.io",
+  pathPrefix: "https://coooldoggy.github.io",
   siteMetadata: {
     // You can overwrite values here that are used for the SEO component
     // You can also add new values here to query them like usual
@@ -42,10 +42,6 @@ module.exports = {
             name: `Github`,
             url: `https://github.com/coooldoggy`,
           },
-          {
-            name: `Homepage`,
-            url: `https://coooldoggy.github.io`,
-          },
         ],
       },
     },
@@ -76,9 +72,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `minimal-blog - @lekoarts/gatsby-theme-minimal-blog`,
-        short_name: `minimal-blog`,
-        description: `Typography driven, feature-rich blogging theme with minimal aesthetics. Includes tags/categories support and extensive features for code blocks such as live preview, line numbers, and code highlighting.`,
+        name: `coooldoggy`,
+        short_name: `coooldoggy-blog`,
+        description: ``,
         start_url: `/`,
         background_color: `#fff`,
         theme_color: `#6B46C1`,
