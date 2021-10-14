@@ -14,7 +14,7 @@ module.exports = {
     author: `@coooldoggy`,
     siteHeadline: `coooldoggy.dev`,
     siteUrl: `https://coooldoggy.github.io`,
-    siteDescription : ``,
+    siteDescription: ``,
     siteLanguage: `kr`,
     siteImage: `/banner.jpg`,
   },
@@ -60,6 +60,14 @@ module.exports = {
             file: `https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap`,
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: `UA-141290882-1`, // 측정 ID
+        head: false, // head에 tracking script를 넣고 싶다면 true로 변경 
+        anonymize: true,
       },
     },
     googleAnalyticsTrackingId && {
