@@ -88,6 +88,20 @@ driver.refresh
 driver.implicitly_wait(time_to_wait=5)
 after_cnt = total_cnt.text
 ```
+근데 이렇게 하면 브라우저랑 연결이 끊긴다 .. 
+error log는  
+> selenium.common.exceptions.StaleElementReferenceException: Message: stale element reference: element is not attached to the page document
+
+찾아보니 너무빨리 해서 그렇다는데 그래서 명시적 대기를 호출했는데도 똑같다
+왜니 ? 정말. .. 
+
+이 [블로그](https://study-grow.tistory.com/entry/%ED%81%AC%EB%A1%A4%EB%A7%81-%EA%B4%80%EB%A0%A8-selenium-stale-%EC%97%90%EB%9F%AC)에서는 sleep 을 하라는데 
+sleep 해도 안된다 ^^....
+
+
+이 [블로그](https://dockyum.tistory.com/48)에서는 element 객체를 재사용해서 그렇다고해서 
+refresh이후에 element를 새로운 객체로 받아와서 시도하니 성공했다. 
+
 
 
 ### Slack Message 보내기 
@@ -157,14 +171,19 @@ sleep(60)
 
 
 def check_if_new_bug_open():
-    total_cnt = driver.find_element_by_xpath(
+    before_cnt = driver.find_element_by_xpath(
         '/html/body/div[1]/div[2]/div[3]/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[7]')
 
-    print(total_cnt.text)
-    before_cnt = total_cnt.text
+    print(before_cnt.text)
+    before_cnt = before_cnt.text
     sleep(3)
-    driver.refresh
-    driver.implicitly_wait(time_to_wait=5)
+    driver.refresh()
+    sleep(5)
+
+    total_cnt = driver.find_element_by_xpath(
+        '/html/body/div[1]/div[2]/div[3]/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[7]')
+    # WebDriverWait(driver, 30).until(EC.presence_of_element_located(
+    #     (By.XPATH, '/html/body/div[1]/div[2]/div[3]/div/div/div[3]/div[1]/div[2]/table/tbody/tr/td[7]')))
     after_cnt = total_cnt.text
     try:
         if before_cnt < after_cnt:
