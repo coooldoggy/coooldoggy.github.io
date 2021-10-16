@@ -16,7 +16,7 @@ module.exports = {
     siteUrl: `https://coooldoggy.github.io`,
     siteDescription: ``,
     siteLanguage: `kr`,
-    siteImage: `/banner.jpg`,
+    siteImage: `/banner.png`,
   },
   plugins: [
     {
