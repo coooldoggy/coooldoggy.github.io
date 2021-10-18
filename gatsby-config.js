@@ -148,7 +148,7 @@ module.exports = {
               }
             `,
             output: `rss.xml`,
-            title: `To infinity and beyond`,
+            title: `coooldoggy.dev`,
           },
         ],
       },

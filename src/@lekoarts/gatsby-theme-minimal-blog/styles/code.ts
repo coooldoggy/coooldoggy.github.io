@@ -128,6 +128,11 @@ const code = {
       background: `#306998`,
       color: `white`,
     },
+    'pre[class~="language-kotlin"]:before': {
+      content: `"kotlin"`,
+      background: `#61dafb`,
+      color: `black`,
+    },
     'pre[class~="language-text"]:before': {
       content: `"text"`,
     },
