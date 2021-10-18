@@ -11,10 +11,55 @@ date: 2021-10-18
 [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fcompose%23article-https%3A%2F%2Fdeveloper.android.com%2Fjetpack%2Fcompose%2Fmental-model)
 - Android를 위한 선언형 UI Toolkit 
 - xml이 아닌 kotlin 으로 작성되기 때문에 kotlin 코드 처럼 dynamic 해질 수 있다. 
+- @Composable 함수는 코틀린으로 작성된 다른 함수들 같이 사용될 수 있다. 
+- XML이 특정 상태에 따라 UI가 어떻게 보여질지에 관한 것이였다면, Compose는 특정 상태에 따라 UI가 무엇을 보여주는지에 대한 구현이다. 
+
+```kotlin
+@Composable
+fun MyApp(names: List<String> = listOf("World", "Compose")) {
+    Column {
+        for (name in names) {
+            Greeting(name = name)
+        }
+    }
+}
+```
 
 
+## Compose 에서 기억해야할 것
+- Composable 함수는 순서와 관계없이 실행될 수 있다.
+- Composable 함수는 동시에 실행할 수 있다. 
+    - Compose가 멀티코어를 활용하고, 화면에 없는 기능을 낮은 우선순위로 실행할 수 있다. 
+- Recomposition이 일어날때 특정 Composable 함수와 람다 함수들을 건너뛸 수 있다.
+- Recomposition은 상태에 따라 취소되고, 다시 시작할 수 있다.
 
-## Jetpack Compose Tutorial 
+
+## State 관리하기 !!!!!
+
+[State Documents](https://developer.android.com/jetpack/compose/state)
+
+Compose는 선언형이기 때문에 값을 바꾸기 위해서는 Compose함수에 다른 값을 전달하는 방법 뿐이다. 보통 이 값을 UI State라고 한다. 
+State가 업데이트 될 때 마다, recompositon이 수행된다. TextField같은 위젯은 xml과 달리 스스로 값을 업데이트하지 않는다.
+Composable은 명시적으로 state가 바뀌었음을 알려줘야 업데이트가 일어난다. 
+
+Composable 에서는 **remember**라는 것을 이용해서 상태 값을 관리할 수 있다. 
+remember는 mutable 또는 immutable 객체로 사용가능하다. 
+
+```kotlin
+val mutableState = remember { mutableStateOf(default) }
+```
+
+
+## Stateful vs Stateless 
+
+Flutter에서 사용되는 StatefulWidget과 StatelessWidget과 유사한 개념이다. 
+상태가 있는 곳에서는 값을 바꾸거나 상태를 기억할 수 있고, 상태가 존재하지 않는 곳에서는 값을 바꾸거나 상태를 기억하지 못한다. 
+
+
+Compose에서 remeber로 상태를 관리하고, 기억하는 것은 Stateful, 즉 상태를 가지는 위젯이다. 
+Stateless 위젯은 어떠한 상태도 가지지 않는 위젯을 뜻한다. 
+
+## Jetpack Compose Tutorial & 구성요소들 
 
 [Tutorial](https://developer.android.com/jetpack/compose/tutorial?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fcompose%23article-https%3A%2F%2Fdeveloper.android.com%2Fjetpack%2Fcompose%2Ftutorial0)
 
@@ -116,8 +161,17 @@ fun Text(
 ```
 
 
+### Layout
+
+- Jetpack Compose 에는 세개의 기본 레이아웃 정렬이 있다. 
+    - Colum
+    - Row
+    - Box 
+
+![layout](./compose_layout.png)
+
 #### Colum
-- view를 수직으로 정렬할때 사용 
+- view를 수직으로 정렬할때 사용된다. 
 
 ```kotlin
 @Composable
@@ -169,5 +223,12 @@ inline fun Row(
 ```
 
 #### Modifier
+
+[Modifier Documents](https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier)
+
 - Compose UI 요소들을 꾸미고, behavior를 지정함.
 - 예를 들면 배경, 패딩, 클릭 이벤트 리스너 등등 
+
+
+#### Button
+- Button
