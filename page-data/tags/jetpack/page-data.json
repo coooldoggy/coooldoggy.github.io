@@ -1,5 +1,5 @@
 {
     "componentChunkName": "component---node-modules-lekoarts-gatsby-theme-minimal-blog-core-src-templates-tag-query-tsx",
     "path": "/tags/jetpack",
-    "result": {"data":{"allPost":{"nodes":[{"slug":"/jetpack-compose","title":"Jetpack Compose","date":"18.10.2021","excerpt":"Jetpack Compse Thinking in Compose Android를 위한 선언형 UI Toolkit  xml이 아닌 kotlin 으로 작성되기 때문에 kotlin 코드 처럼 dynamic 해질 수 있다.  Jetpack Compose…","timeToRead":1,"description":null,"tags":[{"name":"Android","slug":"android"},{"name":"Jetpack","slug":"jetpack"}]}]}},"pageContext":{"slug":"jetpack","name":"Jetpack","formatString":"DD.MM.YYYY"}},
+    "result": {"data":{"allPost":{"nodes":[{"slug":"/jetpack-compose","title":"Jetpack Compose","date":"18.10.2021","excerpt":"Jetpack Compse Thinking in Compose Android를 위한 선언형 UI Toolkit  xml이 아닌 kotlin 으로 작성되기 때문에 kotlin 코드 처럼 dynamic 해질 수 있다.  @Composable…","timeToRead":2,"description":null,"tags":[{"name":"Android","slug":"android"},{"name":"Jetpack","slug":"jetpack"}]}]}},"pageContext":{"slug":"jetpack","name":"Jetpack","formatString":"DD.MM.YYYY"}},
     "staticQueryHashes": ["2744905544","3090400250","318001574"]}
