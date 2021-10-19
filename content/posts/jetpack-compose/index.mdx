@@ -32,6 +32,7 @@ fun MyApp(names: List<String> = listOf("World", "Compose")) {
     - Compose가 멀티코어를 활용하고, 화면에 없는 기능을 낮은 우선순위로 실행할 수 있다. 
 - Recomposition이 일어날때 특정 Composable 함수와 람다 함수들을 건너뛸 수 있다.
 - Recomposition은 상태에 따라 취소되고, 다시 시작할 수 있다.
+- Child mesaure는 한번만 할 수 있다. 두번하면 runtime Exception 발생 
 
 
 ## State 관리하기 !!!!!
@@ -190,6 +191,24 @@ inline fun Column(
 }
 ```
 
+- LazyColum을  사용하면 list를 만들 수 있다. 
+- LazyColum은 안드로이드의 Recyclerview와 같다.
+
+```kotlin
+@Composable
+fun LazyList() {
+    // We save the scrolling position with this state that can also 
+    // be used to programmatically scroll the list
+    val scrollState = rememberLazyListState()
+
+    LazyColumn(state = scrollState) {
+        items(100) {
+            Text("Item #$it")
+        }
+    }
+}
+```
+
 ##### Usage
 
 ```kotlin
@@ -232,3 +251,65 @@ inline fun Row(
 
 #### Button
 - Button
+
+
+#### Customizing Layout 
+
+- Modifier.layout 사용시 measurable, constraints 두개의 파라미터가 주어진다.
+- measurable: 자식이 위치하고 크기가 정해질것 
+- constraints: 자식의 최소, 최대 넓이와 높이
+
+```
+fun Modifier.customLayoutModifier(...) = Modifier.layout { measurable, constraints ->
+  ...
+})
+```
+
+#### Constraint Layout 
+
+dependency 추가 
+
+```
+// build.gradle
+implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
+```
+
+- Reference는 createRefs() 를 호출하여 만들어진다. 
+- constraint로 참조할 compose에 createRefs()를 호출하여야 reference로 사용가능 
+- constrainAs 사용하여 constraint 추가 
+- linkTo 와 같은 함수로 constraint 설정 
+
+```kotlin
+@Composable
+fun ConstraintLayoutContent() {
+    ConstraintLayout {
+
+        // Create references for the composables to constrain
+        val (button, text) = createRefs()
+
+        Button(
+            onClick = { /* Do something */ },
+            // Assign reference "button" to the Button composable
+            // and constrain it to the top of the ConstraintLayout
+            modifier = Modifier.constrainAs(button) {
+                top.linkTo(parent.top, margin = 16.dp)
+            }
+        ) {
+            Text("Button")
+        }
+
+        // Assign reference "text" to the Text composable
+        // and constrain it to the bottom of the Button composable
+        Text("Text", Modifier.constrainAs(text) {
+            top.linkTo(button.bottom, margin = 16.dp)
+        })
+    }
+}
+```
+
+- ConstraintLayout에서 사용하는 guildLine, barrier, chain 등을 사용할 수 있다. 
+- barrier는 ConstraintLayout안에서 생성될 수 있다. constrainAs안에서는 생성 불가 
+
+```kotlin
+val barrier = createEndBarrier(button1, text)
+```
