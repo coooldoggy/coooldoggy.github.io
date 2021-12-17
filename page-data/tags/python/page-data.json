@@ -1,5 +1,5 @@
 {
     "componentChunkName": "component---node-modules-lekoarts-gatsby-theme-minimal-blog-core-src-templates-tag-query-tsx",
     "path": "/tags/python",
-    "result": {"data":{"allPost":{"nodes":[{"slug":"/seleninum을-이용한-자동화","title":"Seleninum을 이용한 자동화","date":"14.10.2021","excerpt":"QA를 진행할떄 새로운 이슈가 올라오는 것을 확인하려면  페이지 접속 > refresh > 이슈 개수가 늘어났는지 확인하기  의 과정을 거쳐야하는데 .. 다른일하다가 리프레쉬 하기 귀찮아져서 crawler를 만들었다. 언어 선택 nodejs…","timeToRead":1,"description":null,"tags":[{"name":"python","slug":"python"}]}]}},"pageContext":{"slug":"python","name":"python","formatString":"DD.MM.YYYY"}},
+    "result": {"data":{"allPost":{"nodes":[{"slug":"/seleninum을-이용한-매크로-노예만들기","title":"Seleninum을 이용한 매크로 노예만들기","date":"14.10.2021","excerpt":"QA를 진행할떄 새로운 이슈가 올라오는 것을 확인하려면  페이지 접속 > refresh > 이슈 개수가 늘어났는지 확인하기  의 과정을 거쳐야하는데 .. 다른일하다가 리프레쉬 하기 귀찮아져서 crawler를 만들었다. 언어 선택 nodejs…","timeToRead":1,"description":null,"tags":[{"name":"python","slug":"python"}]}]}},"pageContext":{"slug":"python","name":"python","formatString":"DD.MM.YYYY"}},
     "staticQueryHashes": ["2744905544","3090400250","318001574"]}
