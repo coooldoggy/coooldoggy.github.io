@@ -1,0 +1,81 @@
+---
+title: ProGuard 정리 
+tags: 
+    - Android
+date: 2022-03-14
+---
+
+https://developer.android.com/studio/build/shrink-code?hl=ko
+https://www.guardsquare.com/en/products/proguard/manual/usage
+
+다음의 경로에 파일을 만든다
+```
+<module-dir>/proguard-rules.pro 
+```
+
+
+build.gradle 에 다음을 추가해준다. 
+
+```
+android {
+        ...
+        buildTypes {
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile(
+                  'proguard-android-optimize.txt'),
+                  // List additional ProGuard rules for the given build type here. By default,
+                  // Android Studio creates and includes an empty rules file for you (located
+                  // at the root directory of each module).
+                  'proguard-rules.pro'
+            }
+        }
+        flavorDimensions "version"
+        productFlavors {
+            flavor1 {
+              ...
+            }
+            flavor2 {
+                proguardFile 'flavor2-rules.pro'
+            }
+        }
+    }
+```
+
+
+
+JNI method를 호출하는 경우
+
+런타임 리플랙션을 사용하여 코드를 찾는 경우 
+
+Keep을 사용하여 R8이 특정 코드를 유지하도록함.
+
+```
+-keep public class MyClass
+```
+
+
+
+Option
+```
+verbose : 로그 사용
+keepattributes *Annotation* : 어노테이션 보존
+SourceFile : 에러시 소스 파일명 표시
+LineNumberTable : 에러시 라인수 표시
+Signature : Generic 타입 정보 보존
+-keep interface ~~~ : 명시된 하위 인터페이스를 난독화하지 않음
+-keep class ~~~ : 명시된 클래스 또는 메소드를 난독화하지 않음
+-keep class com.test.** {
+ public *;
+} // com.test 하위 클래스 중 public 메소드만 난독화하지 않음
+-keep class com.test.** {*;} // 전체 난독화하지 않음
+-keepclassmembers (class/interface/enum) ~~~ : Serializable 인터페이스를 구현하는 필드와 클래스를 난독화에서 제외
+-keepclassmembers enum com.test.** {*;}
+
+dontoptimize : 최적화 안함
+optimizationpasses n : 최적화 통과 수를 명시. 기본 1 (최적화를 하는 경우에만 적용 가능)
+dontshrink : 사용하지 않는 메소드 유지
+dontwarn com.test.** : 해당 패키지의 Warning을 무시
+dontpreverify : 사전 검증기능을 사용하지 않음
+dontusemixedcaseclassnames : 대소문자가 혼합된 클래스명을 허용하지 않음
+```
