@@ -28,14 +28,14 @@ module.exports = {
             title: `Blog`,
             slug: `/blog`,
           },
-          {
-            title: `TIL`,
-            slug: `/til`,
-          },
           // {
-          //   title: `About`,
-          //   slug: `/about`,
+          //   title: `TIL`,
+          //   slug: `/til`,
           // },
+          {
+            title: `About`,
+            slug: `/about`,
+          },
         ],
         externalLinks: [
           {
