@@ -1,0 +1,163 @@
+---
+title: Android 14 마이그레이션 
+tags: 
+    - Android
+date: 2024-02-02
+---
+
+안드로이드 14 UpsideDownCake가 나온지 한참 되었지만, 대응에 관한 글이 없어 작성해보고자 한다...
+
+안드로이드 14에서 바뀐 점들이 꽤 많은데 다 나열할 수는 없고 일단 중요한 포인트 들만 나열한다면 이렇게 7가지 종류가 있다. 
+모든 변경 사항을 확인하고 싶다면 <a href= "https://developer.android.com/about/versions/14/summary?hl=ko">개발자 사이트</a>를 확인하자. 
+
+1. 최소 API 기준 업데이트 
+ - targetSdkVersion이 23 미만인 앱은 설치할 수 없습니다.
+ - 이제 targetSdkVersion이 23 미만인 앱은 안드로이드 14에서 다운로드 할 수 없다. 
+2. <a href= "https://developer.android.com/about/versions/14/behavior-changes-14?hl=ko#safer-intents">암시적 인텐트 및 대기 중인 인텐트 제한</a>
+ - Android 14 (API 수준 34) 이상을 타겟팅하는 앱의 경우 Android는 앱이 암시적 인텐트를 내부 앱 구성요소로 전송하지 못하도록 제한합니다.
+ - 암시적인 인텐트를 사용할 수 없다. 
+3. 런타임 등록 broadcast receiver는 내보내기 동작을 지정해야 함
+ - Android 14 (API 수준 34) 이상을 타겟팅하고 컨텍스트 등록 수신기를 사용하는 앱과 서비스는 수신기를 기기의 다른 모든 앱으로 내보내야 하는지 나타내는 플래그를 지정해야 합니다.
+4. 백그라운드에서 활동 시작에 관한 추가 제한사항
+ - Android 14 (API 수준 34) 이상을 타겟팅하는 앱은 다른 앱의 PendingIntent를 전송하거나 앱의 서비스를 바인딩할 때 다른 앱에 백그라운드 활동 실행 권한을 부여할지 선택해야 합니다.
+5. 정확한 알람 예약은 기본적으로 거부됨
+ - SCHEDULE_EXACT_ALARM 권한은 Android 13 이상을 타겟팅하는 새로 설치된 대부분의 앱에 더 이상 사전 부여되지 않습니다. 즉, 권한이 기본적으로 거부됩니다.
+6. 포그라운드 서비스 유형이 필요함
+ - 앱이 Android 14 (API 수준 34) 이상을 타겟팅하는 경우 앱 내 각 포그라운드 서비스에 포그라운드 서비스 유형을 하나 이상 지정해야 합니다.
+7.JobScheduler가 콜백 및 네트워크 동작을 강화
+ - 앱이 Android 14 (API 수준 34) 이상을 타겟팅하고 기본 스레드에 부여된 시간을 초과하면 앱은 오류 메시지와 함께 ANR을 트리거합니다.
+
+
+중요한 점들이 몇가지 있는데 보통 많이 적용하는 것들 위주로 설명한다면 
+
+## 암시적 인텐트 및 대기중인 인텐트 제한 
+
+우선 암시적 인텐트를 사용할 수 없다는 것은 앱이 manifest에 설정되지 않은 패키지나 설정창 등에 접근하게 하려면 
+Intent를 수정해야한다. 
+
+이렇게 선언된 것들은 모두 exception을 발생시킨다. 
+
+```Kotlin
+// Throws an exception when targeting Android 14.
+context.startActivity(Intent("com.example.action.APP_ACTION"))
+```
+
+그렇다고 방법이 없는 것은 아니다. 이와 같이 변경하면 암시적 인텐트를 사용할 수 있다. 
+
+```Kotlin
+// This makes the intent explicit.
+val explicitIntent =
+        Intent("com.example.action.APP_ACTION")
+explicitIntent.apply {
+    package = context.packageName
+}
+context.startActivity(explicitIntent)
+```
+
+예를 들자면 만약 앱의 설정화면으로 이동해야한다면 기존 코드는 아래와 같다. 
+
+```Kotlin
+   val intent = Intent().apply {
+         action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+   }
+    try {
+        startActivity(intent)
+    } catch (e: Exception) {
+        Timber.e(e.message)
+    }
+```
+
+안드로이드 14를 타겟팅 한다면 다음과 같이 변경해 주어야한다. 
+packageName은 당연히 이 앱의 이름이다. 
+
+```Kotlin
+     val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+        putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+    }
+    try {
+        startActivity(intent)
+    } catch (e: Exception) {
+        Timber.e(e.message)
+    }
+```
+
+ 
+ 
+## 정확한 알람 예약은 기본적으로 거부됨
+
+이건 알람을 쓰는 앱에서는 치명적인데 만약 앱이 알람을 쓰고있지 않다면 당신은 Lucky.. 
+하지만 그렇게 복잡하지는 않다. 
+
+그냥 exactAlarm() 을 사용하고 싶다면 권한을 추가하고, 권한을 사용자에게 요구하면 된다. 
+말로는 쉽지만 .. 하지만 포그라운드 서비스 유형보다는 백만배 쉽다.
+
+<a href="https://developer.android.com/about/versions/14/changes/schedule-exact-alarms?hl=ko#migration">정확한 알림 설정</a>
+
+구글에서 제공한 코드에 !! 가 들어가있는 것은 가히 충격적이지만 이 부분은 수정하도록하자 .. 
+
+
+```Kotlin
+val alarmManager: AlarmManager = context.getSystemService<AlarmManager>()!!
+when {
+   // If permission is granted, proceed with scheduling exact alarms.
+   alarmManager.canScheduleExactAlarms() -> {
+       alarmManager.setExact(...)
+   }
+   else -> {
+       // Ask users to go to exact alarm page in system settings.
+       startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+   }
+}
+```
+
+
+## 포그라운드 서비스 유형이 필요함
+
+얘가 제일 골치 아프다.. 
+일단 Service 를 사용한다면 그 Service를 왜 사용하고 있고, 그 유형에 맞는 서비스동작을 manifest에 추가해 주어야한다. 
+그리고 아무도 안알려주지만, 앱 심사시에 그 Service 권한에 대해 왜 사용하는지, 필요한 이유가 뭔지에 대한 동영상을 제출해야 심사가 가능하다... 
+
+서비스유형은 다음과 같다
+- camera
+- connectedDevice
+- dataSync
+- health
+- location
+- mediaPlayback
+- mediaProjection
+- microPhone
+- phoneCall
+- remoteMessaging
+- shortService
+- specialUse
+- systemExempted 
+
+다행히 FirebaseMessaging Service를 사용하고 있다면 remoteMessaging 권한은 추가하지 않아도 된다.
+하지만... 서버에서 사용하는 push Alaram 을 받고 있다면 이 권한에 대한 설정이 필요하다. 
+
+
+자세한 내용은 역시 제공자이자.. 크리에이터인 google의 <a href="https://developer.android.com/about/versions/14/changes/fgs-types-required?hl=ko">문서</a>를 보자 
+
+만약 위젯에서 Service를 사용한다면 이번 기회에 WorkManager로 마이그레이션 하는 것이 훨씬 빠를지도 모른다.
+하지만 여기서 함정은 "JobScheduler가 콜백 및 네트워크 동작을 강화" 인데, 만약 background WorkManager가 지정된 시간보다 오래걸리면 ANR을 뱉어낸다. 
+
+그래서 지정된 시간이 얼만데 .. 
+안알려줘서 <a href="https://cs.android.com/android/platform/superproject/main/+/main:cts/tests/JobScheduler/JobTestApp/src/android/jobscheduler/cts/jobtestapp/TestJobService.java;bpv=1;bpt=1?hl=ko">AOSP</a> 를 까보았다. 
+
+```java
+  if (transientExtras.getBoolean(EXTRA_SLOW_START)) {
+            try {
+                Thread.sleep(60_000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "Interrupted sleeping for slow start");
+            }
+        }
+```
+
+TestJobService를 보니 ANR 이 트리거 되는 시간은 60_000 이다. 
+이런건 왜 문서에 안적어줄까? ..
+아무튼 WorkManager로 마이그레이션한다면 이 시간에 주의하도록 하자. 
+
+
+이렇게 모든 것들을 마치고 나서 동영상까지 제출하고 심사를 통과한다면 당신은 성공한 것이다! 
+하지만 ... Android 15가 다가오고 있으므로 또 다시 마이그레이션 할 준비를 하도록하자 ..!
