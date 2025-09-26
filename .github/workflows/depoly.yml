@@ -8,12 +8,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4   # 최신 버전으로 업데이트
+      - uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '16.x'
-          cache: 'yarn'   # 별도로 actions/cache를 안써도 yarn/npm 캐시 지원됨
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
       - name: Install dependencies
         run: yarn install --prod --pure-lockfile
       - name: Build
