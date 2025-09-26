@@ -12,7 +12,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'   # Gatsby 최신 버전 호환성 위해 Node 18 LTS 사용
+          node-version: '14.x'   # Gatsby 3.x 호환성을 위해 Node 14 사용
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - name: Install dependencies
