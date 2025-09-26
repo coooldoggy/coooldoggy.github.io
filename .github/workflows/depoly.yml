@@ -12,7 +12,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'   # Upgrade for newer syntax support
+          node-version: '20.x'   # Web Streams API 지원을 위해 Node 20 사용
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - name: Install dependencies
