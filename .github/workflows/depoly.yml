@@ -12,13 +12,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          node-version: '18.x'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
       - name: Install dependencies
-        run: yarn install --prod --pure-lockfile
+        run: npm ci --only=production
       - name: Build
-        run: yarn build --prefix-paths
+        run: npm run build -- --prefix-paths
         env:
           NODE_ENV: production
       - uses: peaceiris/actions-gh-pages@v3
