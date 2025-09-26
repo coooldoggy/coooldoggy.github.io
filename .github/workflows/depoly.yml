@@ -8,18 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4   # 최신 버전으로 업데이트
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '16.x'
-      - name: Cache node_modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{runner.OS}}-build-${{hashFiles('**/yarn.lock')}}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ runner.OS }}-
+          cache: 'yarn'   # 별도로 actions/cache를 안써도 yarn/npm 캐시 지원됨
       - name: Install dependencies
         run: yarn install --prod --pure-lockfile
       - name: Build
@@ -30,4 +24,4 @@ jobs:
         with:
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./public
-          publish_branch : depoly
+          publish_branch: depoly
