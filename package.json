@@ -39,7 +39,7 @@
     "gatsby-remark-smartypants": "4.11.0",
     "gh-pages": "3.2.3"
   },
-  "overrides": {
+  "resolutions": {
     "undici": "5.28.4"
   }
 }
