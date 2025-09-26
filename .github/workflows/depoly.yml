@@ -12,13 +12,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14.x'   # Gatsby 3.x 호환성을 위해 Node 14 사용
+          node-version: '16.x'   # Upgrade for newer syntax support
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-      - name: Fix undici compatibility
-        run: npm install undici@5.28.4 --legacy-peer-deps
       - name: Build
         run: npm run build -- --prefix-paths
         env:
