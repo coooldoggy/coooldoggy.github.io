@@ -6,7 +6,7 @@ exports.onRenderBody = ({ setHeadComponents }) => {
     <meta
       key="google-site-verification"
       name="google-site-verification"
-      content="eDQfqAYAOa75Lg2VJsC1EGNIZBOgfSqALpBHHSrxfYk"
+      content="PA_W6AUEtcTP4JxquS-QYPZCRVbdgfEQW9Z-4m6NDro"
     />,
   ]);
 };
