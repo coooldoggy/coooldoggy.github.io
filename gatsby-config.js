@@ -80,6 +80,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
+    output: `/sitemap.xml`,
+    createLinkInHead: true,
+    resolveSiteUrl: () => `https://coooldoggy.github.io`,
         name: `coooldoggy`,
         short_name: `coooldoggy-blog`,
         description: `coooldogy dev blog`,
