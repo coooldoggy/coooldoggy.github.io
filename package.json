@@ -7,14 +7,15 @@
   "license": "0BSD",
   "starter-name": "gatsby-starter-minimal-blog",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
     "develop:cypress": "cross-env CYPRESS_SUPPORT=y yarn develop",
     "build:cypress": "cross-env CYPRESS_SUPPORT=y yarn build",
     "start": "gatsby develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public -b depoly"
+  "develop": "gatsby develop",
+  "build": "gatsby build --prefix-paths",
+  "format": "prettier --write \"**/*.{js,ts,tsx,json,md}\"",
+  "serve": "gatsby serve",
+  "clean": "gatsby clean",
+  "deploy": "gatsby build --prefix-paths && gh-pages -d public -b gh-pages"
   },
   "dependencies": {
     "@lekoarts/gatsby-theme-minimal-blog": "^3.0.0",
